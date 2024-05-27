@@ -1,0 +1,5 @@
+{"example" : 
+ {"bvars" : {"uPoints": 0, "uLines": 0,"uCircles": 0, "ePoints": 0,"eLines": 0, "eCircles": 0}, 
+ "binary_check" : "equiv", 
+ "approx_check" : "none", 
+"testUnsat" : "false"}}

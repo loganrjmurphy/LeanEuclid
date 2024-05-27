@@ -164,7 +164,9 @@ In addition to proof automation, our symbolic reasoning engine can be used to ch
 1. Standard equivalence checking, i.e., check if the two theorem statements are logically equivalent or not. It may also be that one is strictly stronger than the other.
 2. *Approximate* equivalence checking, where we try to quantify how close the two statements are to one another. 
 
-Typically this is done if the statements are not proven equivalent, but you'd like to see how "close" the prediction was to the ground truth. More details can be found in the `E3` subfolder.
+Typically this is done if the statements are not proven equivalent, but you'd like to see how "close" the prediction was to the ground truth. More details and examples can be found in the `E3` subfolder.
+
+
 
 ## Experiments
 

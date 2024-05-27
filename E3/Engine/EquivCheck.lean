@@ -143,8 +143,8 @@ def approxChecker  : PropEvalM ApproxResult := do
   let mut ⟨rawGroundLHSExpr, _, _⟩ ← splitExpr (← groundNegative?) groundE
   if !(← inferType rawGroundLHSExpr).isProp then
     rawGroundLHSExpr := q(True)
-  let rawFull : String := Format.pretty (← pretty groundE) (w := 10000)
-  let guardedFull : String := Format.pretty (← pretty guardedE) (w := 10000)
+  let rawFull : String := Format.pretty (← pretty groundE) (width := 10000)
+  let guardedFull : String := Format.pretty (← pretty guardedE) (width := 10000)
   match ← permutationHeuristic (permInFile (←getInstName)) (permOutFile (←getInstName)) rawFull guardedFull tjson gjson (← getEvalConfig).nPermutations with
       | .error _ => return .mk {}
       | .ok ⟨ground, perms⟩ =>

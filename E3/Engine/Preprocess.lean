@@ -56,7 +56,7 @@ partial def getExistVarsAux : List EConst → Esmt → Expr → MetaM (Expr × L
     match getSort? τ  with
     | some s => do
         let s' ← SystemE.Smt.Esmt.sanitize nm.toString
-        let fv := FVarId.mk s'
+        let fv := FVarId.mk <| .mkSimple s'
         let body := body.instantiate #[.fvar fv]
         let ctx₁ ← runAndGetCtx ctx₀ <| addVarName fv s'
         let ctx₂ ← runAndGetCtx ctx₁ <| Esmt.addConstDecl ⟨s',s⟩

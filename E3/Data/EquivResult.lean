@@ -10,10 +10,10 @@ def isEquiv : EquivResult → Bool
 | _ => false
 
 def toString : EquivResult → String
-| ⟨true, true⟩ => "Props match"
-| ⟨true, false⟩ => "Test prop. is strictly weaker than ground prop."
-| ⟨false, true⟩ => "Test prop. is strictly stronger than ground prop."
-| _ => "no conclusion."
+| ⟨true, true⟩ => "propositions are equivalent"
+| ⟨true, false⟩ => "prediction is strictly weaker than ground truth"
+| ⟨false, true⟩ => "prediction is strictly stronger than ground truth"
+| _ => "no conclusion made between prediction and ground truth"
 
 def toJson : EquivResult → String
 | ⟨true, true⟩ => "\"equiv\""

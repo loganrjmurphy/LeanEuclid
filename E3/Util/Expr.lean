@@ -42,7 +42,7 @@ def renameBVars (e : Expr) : Expr :=
   | .forallE n ty bd bi =>
     .forallE (addGuard n) (renameBVars ty) (renameBVars bd) bi
   | e => e
- where addGuard (nm : Name) : Name := s!"grd_{nm}"
+ where addGuard (nm : Name) : Name := .mkSimple s!"grd_{nm}"
 
 def mergeMaps
   -- a mapping from test expr fvarIds to Strings

@@ -5,10 +5,13 @@ open Lean
 
 set_option autoImplicit false
 
-def runStdEquiv (ctx : EvalCtx) (old : E3Result) : MetaM E3Result := do
+def runStdEquiv (cfg : EvalConfig) (ctx : EvalCtx)  (old : E3Result) : MetaM E3Result := do
   let ⟨eq,ctx'⟩ ← checkFullIff.run ctx
   let tmp := old.addEquivResult eq
-  if ← getTestUnsat.run' ctx' then logWarning "[E3] warning: test proposition is unsatisfiable"
+  if cfg.writeResult = false then
+    IO.println s!"[E3] {eq}"
+  if ← getTestUnsat.run' ctx' then
+    IO.println "[E3] warning: test proposition is unsatisfiable"
   return tmp.addTestUnsatResult (← getTestUnsat.run' ctx')
 
 def runApproxEquiv (r : E3Result) (cfg : EvalConfig) (ctx : EvalCtx) : MetaM Unit := do
@@ -16,7 +19,6 @@ def runApproxEquiv (r : E3Result) (cfg : EvalConfig) (ctx : EvalCtx) : MetaM Uni
     else
       let ⟨res,_⟩ ← approxChecker.run ctx
       let result := r.addApproxResult res
-      logInfo m!"{result}"
       writeResult cfg.instanceName cfg.outputFile result
 
 def E3Main (init : EvalCtx) : MetaM Unit := do
@@ -29,11 +31,11 @@ def E3Main (init : EvalCtx) : MetaM Unit := do
     writeResult cfg.instanceName cfg.outputFile result
   | .onlyApprox => runApproxEquiv result cfg ctx
   | .skipApprox =>
-    result ← runStdEquiv ctx result
+    result ← runStdEquiv cfg ctx result
     logInfo m!"{result}"
     writeResult cfg.instanceName cfg.outputFile result
   | .full =>
-    result ← runStdEquiv ctx result
+    result ← runStdEquiv cfg ctx result
     if result.equivSuccess then
       logInfo "[E3] info: match found, skipping approximate equivalence checking"
       writeResult cfg.instanceName cfg.outputFile result
@@ -42,19 +44,30 @@ def E3Main (init : EvalCtx) : MetaM Unit := do
       runApproxEquiv result cfg ctx
 
 
-def parseArgs (args : List String) : IO EvalConfig :=
-  let name := args[0]!
-  let mode := args[1]!
-  let mode_result := match mode with | "bvars" => EvalMode.justBvars | "full" => .full | "skipApprox" => .skipApprox | "onlyApprox" => .onlyApprox | _ => .justBvars
-  let nPermutations : Nat := args[2]!.toNat!
-  let eqSolverTime := args[3]!.toNat!
-  let appSolverTime := args[4]!.toNat!
-  let outputJsonFile := args[5]!
-  let x : EvalConfig := {
-      instanceName := name, mode := mode_result, nPermutations := nPermutations, equivSolverTime := eqSolverTime, approxSolverTime := appSolverTime, outputFile := outputJsonFile}
-  return x
+def parseArgs (args : List String) : IO (Option EvalConfig) := do
+  if args.length < 6 then
+    IO.println "[E3] error: insufficient number of arguments"
+    return none
+  else
+    let name := args[0]!
+    let mode := args[1]!
+    let mode_result := match mode with | "bvars" => EvalMode.justBvars | "full" => .full | "skipApprox" => .skipApprox | "onlyApprox" => .onlyApprox | _ => .justBvars
+    let nPermutations : Nat := args[2]!.toNat!
+    let eqSolverTime := args[3]!.toNat!
+    let appSolverTime := args[4]!.toNat!
+    let writeResult? := args[5]!
+    let writeResult := match writeResult? with | "true" => true | _ => false
+    if writeResult then if args.length < 7 then
+      IO.println "[E3] error: insufficient number of arguments"
+      return none
+    let outputJsonFile := if writeResult then args[6]! else "E3/out/result.json"
+    let x : EvalConfig := {
+        instanceName := name, mode := mode_result, nPermutations := nPermutations, equivSolverTime := eqSolverTime, approxSolverTime := appSolverTime, writeResult := writeResult, outputFile := outputJsonFile}
+    return x
 
-def runE3fromIO (ground test : Expr) (cfg : EvalConfig) : IO Unit := do
+def runE3fromIO (ground test : Expr) : Option EvalConfig →  IO Unit
+| none => return ()
+| some cfg => do
   let ⟨⟨g,t⟩,_⟩ ← Meta.MetaM.toIO (preprocessExpr ground test) E3Ctx (← E3State)
   let y : EvalCtx := {instanceName := cfg.instanceName, groundExpr := g, testExpr := t, config := cfg}
   let _ ← Meta.MetaM.toIO (E3Main y) E3Ctx (← E3State)

@@ -12,6 +12,7 @@ structure EvalConfig where
   equivSolverTime : Nat := 120
   approxSolverTime : Nat := 5
   mode : EvalMode := .justBvars
-  outputFile : String  := "E3/out/bar.json"
+  writeResult : Bool := false
+  outputFile : String  := "E3/out/result.json"
 
 instance : Inhabited EvalConfig := ⟨{}⟩
