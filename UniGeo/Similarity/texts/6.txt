@@ -1,0 +1,1 @@
+Given W X ∥ V Y. Complete the proof that △ U W X ~ △ U V Y.

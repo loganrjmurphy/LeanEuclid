@@ -1,0 +1,1 @@
+Given F I ∥ G H. Complete the proof that △ F I J ~ △ H G J.

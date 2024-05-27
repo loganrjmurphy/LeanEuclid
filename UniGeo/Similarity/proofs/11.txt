@@ -1,0 +1,3 @@
+UV/UW=UX/UY
+∠WUY≅∠VUX
+△UVX~△UWY

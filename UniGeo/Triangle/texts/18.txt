@@ -1,0 +1,1 @@
+Given ∠V ≅ ∠R and ∠S ≅ ∠W. Complete the proof that S V / R W = T V / R U.

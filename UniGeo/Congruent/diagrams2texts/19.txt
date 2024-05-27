@@ -1,0 +1,1 @@
+There is a triangle with vertices labeled R, S, and T. Inside the triangle, there is a line segment from vertex R to the base ST, dividing the base into two segments. The point where the line segment intersects the base is labeled U.

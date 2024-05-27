@@ -1,0 +1,1 @@
+Given I J ≅ G H. G H ∥ I J. Complete the proof that H I ≅ G J.

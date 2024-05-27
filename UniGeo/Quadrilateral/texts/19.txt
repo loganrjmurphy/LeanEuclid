@@ -1,0 +1,1 @@
+Given U Y ∥ V X and W X ∥ U V and X Y ∥ U V. V X ≅ U W. Complete the proof that ∠ V W X ≅ ∠ U X W.

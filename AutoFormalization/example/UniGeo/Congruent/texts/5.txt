@@ -1,0 +1,1 @@
+Given S T ≅ U V. U V ∥ S T. Complete the proof that S V ≅ T U.

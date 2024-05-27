@@ -1,0 +1,7 @@
+Y is the midpoint of VX
+Y is the midpoint of UW
+UX≅VW
+VY≅XY
+UY≅WY
+△UXY≅△WVY
+∠W≅∠U

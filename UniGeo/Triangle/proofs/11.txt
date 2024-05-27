@@ -1,0 +1,4 @@
+∠V≅∠T
+∠W≅∠Y
+△VWX~△TYU
+WX/UY=VW/TY

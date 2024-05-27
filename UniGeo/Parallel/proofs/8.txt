@@ -1,0 +1,6 @@
+∠VUX and∠UXY are supplementary
+∠VUX+∠UXY=180°
+∠SUV+∠VUX=180°
+∠VUX+∠UXY=∠SUV+∠VUX
+∠UXY=∠SUV
+TV∥WY

@@ -1,0 +1,1 @@
+Given ∠ P T Q ≅ ∠ P Q T and Q T ∥ R S. Complete the proof that ∠S ≅ ∠ Q R S.

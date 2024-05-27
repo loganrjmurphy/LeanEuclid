@@ -1,0 +1,6 @@
+∠PTQ≅∠PQT
+QT∥RS
+∠S≅∠PTQ
+∠QRS≅∠PQT
+∠QRS≅∠PTQ
+∠S≅∠QRS

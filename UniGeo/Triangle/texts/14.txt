@@ -1,0 +1,1 @@
+Given ∠I ≅ ∠K and ∠H ≅ ∠F. Complete the proof that G I / J K = G H / F J.

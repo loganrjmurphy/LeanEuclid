@@ -1,0 +1,7 @@
+I is the midpoint of GH
+FI⟂GH
+∠FIG≅∠FIH
+GI≅HI
+FI≅FI
+△FGI≅△FHI
+∠H≅∠G

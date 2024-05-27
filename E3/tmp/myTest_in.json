@@ -1,0 +1,6 @@
+{"ground" : "∀ (a b c : Point) (BC : Line), (Point.onLine b BC ∧ Point.onLine c BC ∧ b ≠ c) ∧ a ≠ b → ∃ l, |(a─l)| = |(b─c)|",
+"guarded_test" : "∀ (grd_a grd_b grd_c : Point) (grd_BC : Line), (Point.onLine grd_b grd_BC ∧ Point.onLine grd_c grd_BC ∧ grd_b ≠ grd_c) ∧ grd_a ≠ grd_b → ∃ grd_l, |(grd_a─grd_l)| = |(grd_b─grd_c)| ∧ grd_a = grd_b",
+"guarded_test_names" : {"univ" : {"points" : ["grd_c", "grd_b", "grd_a"], "lines" : ["grd_BC"], "circles" : []}, 
+"exist" : {"points" : ["grd_l"], "lines" : [], "circles" : []}},
+"ground_names" : {"univ" : {"points" : ["c", "b", "a"], "lines" : ["BC"], "circles" : []}, 
+"exist" : {"points" : ["l"], "lines" : [], "circles" : []}}}

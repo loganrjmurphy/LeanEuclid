@@ -1,0 +1,7 @@
+I is the midpoint of EG
+EH∥FG
+∠E≅∠G
+∠F≅∠H
+EI≅GI
+△EHI≅△GFI
+HI≅FI

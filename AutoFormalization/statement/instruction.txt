@@ -1,0 +1,61 @@
+-- Basic Geometric Sorts --
+axiom Point : Type
+axiom Line : Type
+axiom Circle : Type
+
+-- Inductive Types for Geometric Entities --
+inductive Angle | right | ofPoints (A B C : Point)
+inductive Segment | endpoints (a b : Point)
+inductive Triangle | ofPoints (a b c : Point)
+
+-- Notations and Macros for Geometric Entities --
+"|(a─b)|" means the length of the line segment between point a and point b.
+"∠ a:b:c" means the degree of the angle formed by points a, b, and c.
+"∟" means the right angle.
+"△ a:b:c" means the triangle formed from points a, b and c.
+"Triangle.area △ a:b:c" means the area of the triangle formed by points a, b and c.
+
+-- Relations and Axioms for Geometric Sorts --
+namespace Point
+def onLine (a : Point) (L : Line) -- point a is on line L.
+def sameSide (a b : Point) (L : Line) -- point a and b are on the same side of line L.
+def opposingSides (a b : Point) (L : Line) -- point a and b are on the opposite sides of line L.
+def collinear : (a b c : Point) -- points a, b and c are collinear.
+end Point
+
+namespace Line
+def intersectsLine (L M : Line) -- two lines L and M intersect at some point.
+def intersectsCircle (L : Line) (C : Circle) -- line L and circle C intersect.
+end Line
+
+namespace Circle
+def onCircle (a: Point) (C: Circle) -- point a is on circle C.
+def insideCircle (a: Point) (C: Circle) -- point a is inside circle C.
+def outsideCircle (a: Point) (C: Circle)-- point a is outside circle C.
+def isCentre (a: Point) (C: Circle) -- point a is on the center circle C.
+def intersectsCircle (C1 C2: Circle) -- circle C1 and C2 intersect.
+end Circle
+
+namespace Triangle
+def congruent (T1 T2 : Triangle) -- triangle T1 and T2 are congruent.
+def similar (T1 T2 : Triangle) -- triangle T1 and T2 are similar.
+end Triangle
+
+-- Geometric Relations --
+def distinctPointsOnLine (a b : Point) (L : Line) -- points a and b are distinct and on line L.
+def twoLinesIntersectAtPoint (AB BC : Line) (b : Point) -- line AB and BC intersect at point b.
+def between (a b c : Point) -- points a, b and c collinear and cyclically ordered.
+def formTriangle (a b c : Point) (AB BC CA : Line) -- point a, b and c form a triangle, where point a and b are on line AB, point b and c are on line BC, point a and c are on line CA.
+def formRectilinearAngle (a b c : Point) (AB BC : Line)  -- point a, b and c form a rectilinear angle where a≠b and b≠c.
+def formParallelogram (a b c d : Point) (AB CD AC BD : Line) -- point a, b, d, and c (in clockwise/counterclockwise order) form a parallelogram, where point a and b are on line AB, point c and d are on line CD, point a and c are on line AC, and point b and d are on line BD.
+def formQuadrilateral (a b c d : Point) (AB CD AC BD : Line) -- point a, b, d, and c (in clockwise/counterclockwise order) form a quadrilateral, where point a and b are on line AB, point c and d are on line CD, point a and c are on line AC, and point b and d are on line BD.
+
+--  Guidelines --
+1. Proposition Format: Your proposition must be of the form <<< ∀ (...) P_1 ∧ P_2 ... ∧ P_n → ∃ (...) Q_1 ∧ Q_2 ... ∧ Q_m >>> where where each P_i and Q_i is built from the above building blocks using conjunction (∧) disjunction (∨) and negation (¬). Note that there may be zero existentially quantified variables. 
+2. Implication: There can be only a single implication in the formula; either side of the implication must be a conjunction of formulae.
+3. Numeric Values Restrictions: Denote 90-degree angle by ∟, 180-degree angle by ∟ + ∟, etc. Also, when referring to segments, we always mean its length (i.e. |(a─b)|).
+4. Quantified Variables: Your quantified variables must be limited to primitive geometric types: points, lines, and circles. ALL bound variables must be mentioned at some point.
+5. Intermediate Variables: You should never define an intermediate variable inside the proposition. For example, "let α := (something);" is not allowed.
+6. Numeric Operators: You should only uses  addition (+), subtraction (-), multiplication (*), and division (/). Avoid using other mathematical operators such as exponentiation.
+7. Axioms: You should only use the provided axioms. For example, Line L is parallel to line M can be expressed as ¬(L.intersectsLine M). Do not use Line.Parallel L M.
+8. Response Format: Present your formalized Lean expression within triple angle brackets (<<< Lean expression here >>>). Do not add any annotations/explanations, or markdown syntax.

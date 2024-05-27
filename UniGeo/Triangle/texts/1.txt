@@ -1,0 +1,1 @@
+Given H J ≅ H I. K is the midpoint of I J. Complete the proof that ∠ H K J ≅ ∠ H K I.

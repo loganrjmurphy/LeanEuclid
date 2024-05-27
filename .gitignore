@@ -1,0 +1,9 @@
+/build
+/lake-packages/*
+/.lake/*
+/.vscode/*
+/result
+/tmp
+*.olean
+.DS_Store
+

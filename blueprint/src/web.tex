@@ -1,0 +1,35 @@
+% This file makes the web version of the blueprint.
+% This file can be built locally.
+
+\documentclass{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{charter}
+\usepackage{fancyhdr}
+\usepackage{epsf}
+\usepackage[bookmarks=true]{hyperref}
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.svg,.png,.jpg}
+\usepackage[capitalize]{cleveref}
+\usepackage[showmore, dep_graph, project=../../]{blueprint}
+\usepackage{tikz-cd}
+\usepackage{tikz}
+
+\input{preamble/web}
+
+\github{https://github.com/loganrjmurphy/lean-geo-lib/}
+\dochome{https://loganrjmurphy.github.io/lean-geo-lib/docs}
+
+\title{The First Book of Euclid's Elements---Commentary and Lean Formalization}
+\author{
+    Logan Murphy$^{1}$, Jack Sun$^{1}$, Zhaoyu Li$^{1}$, Anima Anandkumar$^{2}$, Xujie Si$^{1\,\dagger}$, and Kaiyu Yang$^{2\,\dagger}$\\
+    $^1$University of Toronto, ~$^2$Caltech\\
+    $^\dagger$ Equal advising \\
+}
+
+\begin{document}
+\maketitle
+\input{main}
+\end{document}

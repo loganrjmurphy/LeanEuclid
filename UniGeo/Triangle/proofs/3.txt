@@ -1,0 +1,6 @@
+HK bisects∠IHJ
+HI≅HJ
+∠IHK≅∠JHK
+HK≅HK
+△HIK≅△HJK
+∠HKI≅∠HKJ

@@ -1,0 +1,1 @@
+Given G J ≅ H K and ∠K ≅ ∠J. G J ∥ H K. Complete the proof that △ H I K ≅ △ G H J.

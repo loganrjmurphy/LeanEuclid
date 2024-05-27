@@ -1,0 +1,36 @@
+% This file makes a printable version of the blueprint
+
+\documentclass[a4paper]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{charter}
+\usepackage{fancyhdr}
+\usepackage{epsf}
+\usepackage[bookmarks=true]{hyperref}
+\usepackage[textwidth=14cm]{geometry}
+\usepackage{xfrac}
+\usepackage{polyglossia}
+\setdefaultlanguage{english}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{tikz-cd}
+\usepackage{mathtools}
+\usepackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+\usepackage{fontspec}
+
+\usepackage[nameinlink, capitalize]{cleveref}
+
+\usepackage{amsthm}
+\usepackage{etexcmds}
+\usepackage{thmtools}
+
+\input{preamble/print}
+
+\title{The First Book of Euclid's Elements---Commentary and Lean Formalization}
+\author{Logan Murphy and Kaiyu Yang}
+
+\begin{document}
+\maketitle
+\input{main}
+\end{document}

@@ -1,0 +1,1 @@
+Given I K ⟂ H J and H I ⟂ I J. Complete the proof that △ I J K ~ △ H I K.

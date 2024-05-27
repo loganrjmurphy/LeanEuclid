@@ -1,0 +1,5 @@
+△PQS is equilateral
+∠RQS≅∠SPT
+PT≅QR
+PS≅QS
+△PST≅△QSR

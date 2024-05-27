@@ -1,0 +1,1 @@
+Given R U ⟂ S U and T U ⟂ R S. Complete the proof that △ S T U ~ △ U T R.

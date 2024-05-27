@@ -1,0 +1,1 @@
+Given ∠P ≅ ∠R. S T ⟂ R S and S T ⟂ P T. Complete the proof that △ R S T ≅ △ P T S.

@@ -1,0 +1,1 @@
+There are two triangles RSU and TQU with a common vertex U. Lines RS and TQ are on opposing sides of U.

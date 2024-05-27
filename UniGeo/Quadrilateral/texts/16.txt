@@ -1,0 +1,1 @@
+F I ≅ G H and H I ≅ F G. Complete the proof that ∠ F H I ≅ ∠ G F H.

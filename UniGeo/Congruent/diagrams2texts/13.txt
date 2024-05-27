@@ -1,0 +1,1 @@
+There are two overlapping triangles, △JGH and △KHI, with a common vertex at point H. The points I, H and G are ordered and collinear, while K and J are on the same side of IG.

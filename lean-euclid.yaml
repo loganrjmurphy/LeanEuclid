@@ -1,0 +1,14 @@
+name: lean-geo-lib
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.10
+  - ipython
+  - jupyter
+  - black
+  - mypy
+  - loguru
+  - pip
+  - pip:
+    - openai

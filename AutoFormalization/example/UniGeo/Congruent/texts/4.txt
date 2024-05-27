@@ -1,0 +1,1 @@
+Given P R bisects ∠ Q R S and P R bisects ∠ Q P S. P R bisects ∠ Q R S and ∠ Q P S. Complete the proof that △ P R S ≅ △ P R Q.

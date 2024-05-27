@@ -1,0 +1,1 @@
+Given ∠ Q R U ≅ ∠ Q U R and S T ∥ R U. Complete the proof that ∠ R S T ≅ ∠T.

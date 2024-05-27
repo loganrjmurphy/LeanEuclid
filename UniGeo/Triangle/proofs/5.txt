@@ -1,0 +1,6 @@
+EH bisects∠FEG
+EG≅EF
+∠FEH≅∠GEH
+EH≅EH
+△EFH≅△EGH
+GH≅FH

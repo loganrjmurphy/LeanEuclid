@@ -1,0 +1,1 @@
+Given ∠R ≅ ∠U and ∠T ≅ ∠Q. Complete the proof that R T / Q U = P T / Q S.

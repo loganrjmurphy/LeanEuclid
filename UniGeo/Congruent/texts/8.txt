@@ -1,0 +1,1 @@
+Given ∠ R Q S ≅ ∠ S P T and P T ≅ Q R. △ P Q S is equilateral. Complete the proof that △ P S T ≅ △ Q S R.

@@ -1,0 +1,6 @@
+XY∥WZ
+∠Y≅∠WXY
+∠Y≅∠VZW
+∠WXY≅∠VWZ
+∠WXY≅∠VZW
+∠VWZ≅∠VZW

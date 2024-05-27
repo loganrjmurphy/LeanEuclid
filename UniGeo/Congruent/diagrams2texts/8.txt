@@ -1,0 +1,1 @@
+There are three triangles △TSP, △PSQ, and △QSR. △TSP and △PSQ share a side PS, △PSQ and △QSR share a side SQ

@@ -1,0 +1,1 @@
+Given S T ≅ T U and S V ≅ U V. Complete the proof that U W ≅ S W.

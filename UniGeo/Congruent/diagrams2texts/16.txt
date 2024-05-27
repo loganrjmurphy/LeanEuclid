@@ -1,0 +1,1 @@
+There is a quadrilateral □PQSR with vertices P, Q, S, and R and diagonal QS. T is outside of the quadrilateral. PT and ST is formed by connecting T with P and S.

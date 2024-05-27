@@ -1,0 +1,7 @@
+GK∥HJ
+∠G≅∠IHJ
+∠K≅∠JHK
+∠IHK=∠IHJ+∠JHK
+∠IHK=∠G+∠K
+∠GHK+∠IHK=180°
+∠G+∠K+∠GHK=180°

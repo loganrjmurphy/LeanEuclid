@@ -1,0 +1,7 @@
+U is the midpoint of ST
+RU⟂ST
+∠RUS≅∠RUT
+SU≅TU
+RU≅RU
+△RSU≅△RTU
+∠TRU≅∠SRU

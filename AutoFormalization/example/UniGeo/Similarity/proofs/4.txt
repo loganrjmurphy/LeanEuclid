@@ -1,0 +1,3 @@
+∠U≅∠X
+∠VYX≅∠UYW
+△UWY~△XVY

@@ -1,0 +1,6 @@
+∠TSV and∠SVW are supplementary
+∠TSV+∠SVW=180°
+∠QST+∠TSV=180°
+∠TSV+∠SVW=∠QST+∠TSV
+∠SVW=∠QST
+UW∥RT

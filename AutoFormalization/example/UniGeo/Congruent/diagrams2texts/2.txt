@@ -1,0 +1,1 @@
+There are two triangles △TWR and △VSR with a shared vertex R. TW intersects VS at U, VS intersects RT at S, and TW intersects VR at W.
