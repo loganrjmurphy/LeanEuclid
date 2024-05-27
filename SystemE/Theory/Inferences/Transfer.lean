@@ -59,16 +59,13 @@ axiom point_in_circle_onlyif : ∀ (a b c : Point) (α : Circle),
 -- Suppose a != b, a != c, a is on L, and b is on L. Then c is on L and a is
 -- not  between b and c if and only if \bac = 0.
 --
-@[aesop unsafe [apply,forward]]
 -- Given points a, b and c such that a is not equal to b and a is not equal to c, and line L such that a, b, and c are all on L, and a is not between b and c, then the angle bac has degree zero.
-theorem degenerated_angle_if : ∀ (a b c : Point) (L : Line),
-  (a ≠ b) ∧ (a ≠ c) ∧ (a.onLine L) ∧ (b.onLine L) ∧ (c.onLine L) ∧ ¬(between b a c) → ∠ b:a:c = 0 := by sorry
+axiom degenerated_angle_if : ∀ (a b c : Point) (L : Line),
+  (a ≠ b) ∧ (a ≠ c) ∧ (a.onLine L) ∧ (b.onLine L) ∧ (c.onLine L) ∧ ¬(between b a c) → ∠ b:a:c = 0
 
-@[aesop unsafe [apply,forward]]
 -- Given points a, b and c such that a is not equal to b and a is not equal to c, and line L such that a and b are on L, and the angle formed by b:a:c has degree zero,  then c is on L and a is not between b and c.
-theorem degenerated_angle_onlyif : ∀ (a b c : Point) (L : Line),
-  (a ≠ b) ∧ (a ≠ c) ∧ (a.onLine L) ∧ (b.onLine L) ∧ (∠ b:a:c = 0)  → (c.onLine L) ∧ ¬(between b a c) := by sorry
-
+axiom degenerated_angle_onlyif : ∀ (a b c : Point) (L : Line),
+  (a ≠ b) ∧ (a ≠ c) ∧ (a.onLine L) ∧ (b.onLine L) ∧ (∠ b:a:c = 0)  → (c.onLine L) ∧ ¬(between b a c)
 --
 -- -- Given points a, b and c such that a is not equal to b and a is not equal to c, and line L such that a and b are on L, and the angle formed by b:a:c has degree zero,  then c is on L and a is not between b and c.
 -- axiom degenerated_angle_onlyif : ∀ (a b c : Point) (L : Line),
@@ -101,17 +98,15 @@ axiom sum_angles_onlyif : ∀ (a b c d : Point) (L M : Line),
 -- Then \acd = \dcb if and only if \acd is equal to right-angle.
 --
 
-@[aesop unsafe [apply,forward]]
 -- Given points a and b both lying on a given line L, and point c lying between a and b, and point d not on L such that the angle acd is equal to the angle dcb, then the angle acd is a right angle.
-theorem perpendicular_if : ∀ (a b c d : Point) (L : Line),
+axiom perpendicular_if : ∀ (a b c d : Point) (L : Line),
   (a.onLine L) ∧ (b.onLine L) ∧ (between a c b) ∧ ¬(d.onLine L) ∧ (∠ a:c:d = ∠ d:c:b) →
-  ∠ a:c:d = ∟ := by sorry
+  ∠ a:c:d = ∟
 
-@[aesop unsafe [apply,forward]]
 -- Given points a and b both lying on a given line L, and point c lying between a and b, and point d not on L such that the angle acd is a right angle, then the angle acd is equal to the angle dcb.
-theorem perpendicular_onlyif : ∀ (a b c d : Point) (L : Line),
+axiom perpendicular_onlyif : ∀ (a b c d : Point) (L : Line),
   (a.onLine L) ∧ (b.onLine L) ∧ (between a c b) ∧ ¬(d.onLine L) ∧ (∠ a:c:d = ∟) →
-  ∠ a:c:d = ∠ d:c:b := by sorry
+  ∠ a:c:d = ∠ d:c:b
 
 -- Given points a b and c with a distinct from b and b distinct from c, such that angle abc is the sum of two right angles, then b is between a and c
 -- /--
@@ -190,24 +185,23 @@ axiom sum_areas_onlyif : ∀ (a b c d : Point) (L : Line),
 /--
 Not in [Avigad et al., 2009]
 -/
-@[aesop unsafe [apply,forward]]
 -- Given a parallelogram formed from points a, b, c and d, the sum of the areas of the triangles acd and adb is equal to the sum of the areas of triangles bac and bcd
-theorem parallelogram_area : ∀ (a b c d : Point) (AB CD AC BD : Line), formParallelogram a b c d AB CD AC BD →
-  Triangle.area △ a:c:d + Triangle.area △ a:d:b = Triangle.area △ b:a:c + Triangle.area △ b:c:d := by sorry
+axiom parallelogram_area : ∀ (a b c d : Point) (AB CD AC BD : Line), formParallelogram a b c d AB CD AC BD →
+  Triangle.area △ a:c:d + Triangle.area △ a:d:b = Triangle.area △ b:a:c + Triangle.area △ b:c:d
 
 -- /--
 -- Not in [Avigad et al., 2009]
 -- -/
 --
 -- Given a parallelogram formed from points a, b, c and d, and given points e and f such that e is betwen a and b and f is between c and d, then the sum of the areas of the triangles acf, afe, efd, and edb is equal to the sum of the areas of triangles acd and adb
-theorem sum_parallelograms_area : ∀ (a b c d e f : Point) (AB CD AC BD : Line),
+axiom sum_parallelograms_area : ∀ (a b c d e f : Point) (AB CD AC BD : Line),
   formParallelogram a b c d AB CD AC BD ∧ between a e b ∧ between c f d →
-  Triangle.area △ a:c:f + Triangle.area △ a:f:e + (Triangle.area △ e:f:d) + (Triangle.area △ e:d:b) = (Triangle.area △ a:c:d) + (Triangle.area △ a:d:b) := by sorry
+  Triangle.area △ a:c:f + Triangle.area △ a:f:e + (Triangle.area △ e:f:d) + (Triangle.area △ e:d:b) = (Triangle.area △ a:c:d) + (Triangle.area △ a:d:b)
 
 
 /--
 Not in [Avigad et al., 2009] but required by Proposition 47
 -/
-theorem rectangle_area : ∀ (a b c d : Point) (AB CD AC BD : Line),
+axiom rectangle_area : ∀ (a b c d : Point) (AB CD AC BD : Line),
   formParallelogram a b c d AB CD AC BD ∧ (∠ a:c:d = ∟) →
-  (Triangle.area △ a:c:d + Triangle.area △ a:b:d = |(a─b)| * |(a─c)|) ∧ (Triangle.area △ b:a:c + Triangle.area △ b:d:c) = |(a─b)| * |(a─c)| := by sorry
+  (Triangle.area △ a:c:d + Triangle.area △ a:b:d = |(a─b)| * |(a─c)|) ∧ (Triangle.area △ b:a:c + Triangle.area △ b:d:c) = |(a─b)| * |(a─c)|
