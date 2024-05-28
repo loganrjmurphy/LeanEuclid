@@ -1,0 +1,1 @@
+Given W X ≅ Y Z. W X ∥ Y Z. Complete the proof that △ W Y Z ≅ △ Y W X.

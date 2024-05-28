@@ -1,0 +1,6 @@
+PS bisects∠QPR
+PQ≅PR
+∠QPS≅∠RPS
+PS≅PS
+△PQS≅△PRS
+QS≅RS

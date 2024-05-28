@@ -1,0 +1,6 @@
+∠V≅∠W
+UX⟂VW
+∠UXV≅∠UXW
+UX≅UX
+△UVX≅△UWX
+UW≅UV

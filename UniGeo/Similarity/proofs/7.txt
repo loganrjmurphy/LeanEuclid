@@ -1,0 +1,3 @@
+FG/GH=EG/GI
+∠HGI≅∠EGF
+△EFG~△IHG

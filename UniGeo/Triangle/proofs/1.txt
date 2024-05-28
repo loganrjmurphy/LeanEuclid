@@ -1,0 +1,6 @@
+K is the midpoint of IJ
+HJ≅HI
+IK≅JK
+HK≅HK
+△HIK≅△HJK
+∠HKJ≅∠HKI

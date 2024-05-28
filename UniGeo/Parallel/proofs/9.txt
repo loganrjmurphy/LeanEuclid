@@ -1,0 +1,6 @@
+∠QSR and∠UVX are supplementary
+∠QSR+∠UVX=180°
+∠QSR+∠RSV=180°
+∠QSR+∠UVX=∠QSR+∠RSV
+∠UVX=∠RSV
+RT∥UW

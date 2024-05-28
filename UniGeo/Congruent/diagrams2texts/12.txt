@@ -1,0 +1,1 @@
+There are two overlapping triangles, △TQU and △USR, sharing a common vertex at point U. TQ and SR are on opposing sides of U.

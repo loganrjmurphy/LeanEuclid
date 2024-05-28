@@ -1,0 +1,1 @@
+Given T U ∥ R S and R U ∥ S T. R T ≅ S U. Complete the proof that R S ⟂ S T.

@@ -1,0 +1,1 @@
+There are two triangles △UVX and △VWY with a shared vertex V. U, V, W are collinear, and X and Y are on sameside of UW.

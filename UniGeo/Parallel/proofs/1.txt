@@ -1,0 +1,6 @@
+∠WXZ and∠SUT are supplementary
+∠WXZ+∠SUT=180°
+∠SUT+∠TUX=180°
+∠WXZ+∠SUT=∠SUT+∠TUX
+∠WXZ=∠TUX
+WY∥TV

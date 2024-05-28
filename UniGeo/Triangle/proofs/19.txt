@@ -1,0 +1,4 @@
+∠V≅∠S
+∠W≅∠U
+△VWX~△SUT
+WX/TU=VX/ST

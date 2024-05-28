@@ -1,0 +1,6 @@
+GI bisects∠HGJ
+∠H≅∠J
+∠HGI≅∠IGJ
+GI≅GI
+△GHI≅△GJI
+GJ≅GH

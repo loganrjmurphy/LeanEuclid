@@ -1,0 +1,1 @@
+Given S T ⟂ R T and S T ≅ R U and R U ⟂ R T. Complete the proof that △ S T V ≅ △ U R V.

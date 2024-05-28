@@ -1,0 +1,4 @@
+∠V≅∠R
+∠S≅∠W
+△STV~△WUR
+SV/RW=TV/RU

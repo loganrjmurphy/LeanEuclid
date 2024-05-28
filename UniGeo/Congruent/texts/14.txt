@@ -1,0 +1,1 @@
+Given Y is the midpoint of U W and U X ≅ V W. Y is the midpoint of V X. Complete the proof that ∠W ≅ ∠U.

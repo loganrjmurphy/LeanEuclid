@@ -1,0 +1,1 @@
+Given G I ⟂ F H and H I ⟂ F I. Complete the proof that △ F H I ~ △ I H G.

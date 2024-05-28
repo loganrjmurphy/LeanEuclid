@@ -1,0 +1,1 @@
+Given ∠I ≅ ∠F and ∠K ≅ ∠G. Complete the proof that I K / F G = J K / G H.

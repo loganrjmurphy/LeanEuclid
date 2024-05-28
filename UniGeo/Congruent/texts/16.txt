@@ -1,0 +1,1 @@
+Given S T ≅ R S and Q R ⟂ R S and ∠ Q S R ≅ ∠ P S T and P T ⟂ S T. Complete the proof that P T ≅ Q R.

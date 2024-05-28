@@ -1,0 +1,1 @@
+Given G J ⟂ I J and H J ⟂ G I. Complete the proof that △ H I J ~ △ H J G.

@@ -1,0 +1,6 @@
+RS∥QT
+∠Q≅∠QTU
+∠Q≅∠S
+∠SRU≅∠QTU
+∠Q≅∠SRU
+∠S≅∠SRU

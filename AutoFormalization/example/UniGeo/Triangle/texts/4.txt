@@ -1,0 +1,1 @@
+Given F I ⟂ G H. I is the midpoint of G H. Complete the proof that ∠H ≅ ∠G.

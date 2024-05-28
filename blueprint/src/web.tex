@@ -1,0 +1,36 @@
+% This file makes a web version of the blueprint
+% It should include all the \usepackage needed for this version.
+% The template includes standard AMS packages.
+% It is otherwise a very minimal preamble (you should probably at least
+% add cleveref and tikz-cd).
+
+\documentclass{report}
+
+\usepackage{amssymb, amsthm, amsmath}
+\usepackage{hyperref}
+\usepackage[showmore, dep_graph]{blueprint}
+
+
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{sublemma}[theorem]{Sub-lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\input{macros/common}
+\input{macros/web}
+
+\home{https://loganrjmurphy.github.io/LeanEuclid}
+\github{https://github.com/loganrjmurphy/LeanEuclid}
+\dochome{https://loganrjmurphy.github.io/LeanEuclid/docs}
+
+\title{The First Book of Euclid's Elements---Commentary and Lean Formalization}
+\author{Logan Murphy \and Kaiyu Yang}
+
+\begin{document}
+\maketitle
+\input{content}
+\end{document}

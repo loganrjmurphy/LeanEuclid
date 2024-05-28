@@ -1,0 +1,8 @@
+RU⟂SU
+TU⟂RS
+∠STU≅∠RTU
+∠R+∠S=90°
+∠R+∠RUT=90°
+∠R+∠RUT=∠R+∠S
+∠RUT=∠S
+△STU~△UTR

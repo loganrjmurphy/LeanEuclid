@@ -1,0 +1,1 @@
+There is a triangle STQ. Inside the triangle, Line RU intersects SQ at R and intersects TQ at U.

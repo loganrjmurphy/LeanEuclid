@@ -1,0 +1,6 @@
+∠TUW≅∠UTW
+SV∥TU
+∠S≅∠TUW
+∠UTW≅∠V
+∠S≅∠UTW
+∠V≅∠S

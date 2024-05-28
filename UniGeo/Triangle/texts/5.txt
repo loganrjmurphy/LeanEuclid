@@ -1,0 +1,1 @@
+Given E H bisects ∠ F E G and E G ≅ E F. Complete the proof that G H ≅ F H.

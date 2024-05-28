@@ -1,0 +1,7 @@
+ST≅RS
+QR⟂RS
+∠QSR≅∠PST
+PT⟂ST
+∠T≅∠R
+△PST≅△QSR
+PT≅QR

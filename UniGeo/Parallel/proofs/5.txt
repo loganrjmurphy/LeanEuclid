@@ -1,0 +1,6 @@
+∠RTS and∠VWY are supplementary
+∠RTS+∠VWY=180°
+∠RTS+∠STW=180°
+∠RTS+∠VWY=∠RTS+∠STW
+∠VWY=∠STW
+VX∥SU

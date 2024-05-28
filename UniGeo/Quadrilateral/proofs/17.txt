@@ -1,0 +1,7 @@
+PR bisects∠QPS
+PR bisects∠QRS
+∠QPR≅∠RPS
+∠PRQ≅∠PRS
+PR≅PR
+△PQR≅△PSR
+RS≅QR

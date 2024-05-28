@@ -1,0 +1,1 @@
+Given R S ∥ Q T and ∠Q ≅ ∠ Q T U. Complete the proof that ∠S ≅ ∠ S R U.

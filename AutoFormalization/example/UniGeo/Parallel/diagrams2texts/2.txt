@@ -1,0 +1,1 @@
+Line VX and RY intersect at W, SU and RY intersect at T. Y, W, T and R are collinear.

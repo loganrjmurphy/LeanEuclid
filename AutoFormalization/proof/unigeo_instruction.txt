@@ -1,0 +1,115 @@
+-- Primitive Sorts --
+Point
+Line
+Circle
+
+-- Inductive Types --
+inductive Angle | right | ofPoints (A B C : Point)
+inductive Segment | endpoints (a b : Point)
+inductive Triangle | ofPoints (a b c : Point)
+
+-- Notations --
+"|(a─b)|" means the length of the line segment between point a and point b.
+"∠ a:b:c" means the degree of the angle formed by points a, b, and c.
+"∟" means the right angle.
+"△ a:b:c" means the triangle formed from points a, b and c.
+"Triangle.area △ a:b:c" means the area of the triangle formed by points a, b and c.
+"△ a:b:c ~ △ d:e:f" means the triangle formed by points a, b and c is similar to the triangle formed by points d, e and f.
+"△ a:b:c ≅ △ d:e:f" means the triangle formed by points a, b and c is congruent to the triangle formed by points d, e and f.
+
+-- Relations --
+namespace Point
+def onLine (a : Point) (L : Line) -- point a is on line L.
+def sameSide (a b : Point) (L : Line) -- point a and b are on the same side of line L.
+def opposingSides (a b : Point) (L : Line) -- point a and b are on the opposite sides of line L.
+def collinear : (a b c : Point) -- points a, b and c are collinear.
+end Point
+
+namespace Line
+def intersectsLine (L M : Line) -- two lines L and M intersect at some point.
+def intersectsCircle (L : Line) (C : Circle) -- line L and circle C intersect.
+end Line
+
+namespace Circle
+def onCircle (a: Point) (C: Circle) -- point a is on circle C.
+def insideCircle (a: Point) (C: Circle) -- point a is inside circle C.
+def outsideCircle (a: Point) (C: Circle)-- point a is outside circle C.
+def isCentre (a: Point) (C: Circle) -- point a is on the center circle C.
+def intersectsCircle (C1 C2: Circle) -- circle C1 and C2 intersect.
+end Circle
+
+namespace Triangle
+def congruent (T1 T2 : Triangle) -- triangle T1 and T2 are congruent (i.e satisfies the SAS, AAS, ASA or SSS condition)
+def similar (T1 T2 : Triangle) -- triangle T1 and T2 are similar
+end Triangle
+
+def between (a b c : Point) -- points a, b and c collinear and cyclically ordered.
+def formTriangle (a b c : Point) (AB BC CA : Line) -- point a, b and c form a triangle, where point a and b are on line AB, point b and c are on line BC, point a and c are on line CA.
+def formRectilinearAngle (a b c : Point) (AB BC : Line) -- point a, b and c form a rectilinear angle where a≠b and b≠c.
+def formParallelogram (a b c d : Point) (AB CD AC BD : Line) -- point a, b, d, c (in clockwise/counterclockwise order) form a parallelogram, a and b are on line AB, c and d are on line CD, a and c are on line AC, b and d are on line BD
+def distinctPointsOnLine (a b : Point) (L : Line) -- points a and b are distinct and on line L.
+def twoLinesIntersectAtPoint (AB BC : Line) (b : Point) -- line AB and BC intersect at point b.
+def formQuadrilateral (a b c d : Point) (AB CD AC BD : Line) -- point a, b, d, c (in clockwise/counterclockwise order) form a quadrilateral, a and b are on line AB, c and d are on line CD, a and c are on line AC, b and d are on line BD
+
+-- Construction Rules --
+axiom extend_point : ∀ (L : Line) (b c : Point), distinctPointsOnLine b c L → ∃ a : Point, (a.onLine L) ∧ (between b c a)
+
+-- Inference Rules --
+axiom congruent_if (T1 T2: Triangle): congruent T1 T2 → match T1,T2 with
+  | (Triangle.ofPoints A B C) ,(Triangle.ofPoints D E F) =>
+    |(A─B)| = |(D─E)| ∧ |(B─C)| = |(E─F)| ∧ |(A─C)| = |(D─F)| ∧ ∠ A:B:C = ∠ D:E:F ∧ ∠ A:C:B = ∠ D:F:E ∧ ∠ B:A:C = ∠ E:D:F  
+axiom similar_if (T1 T2: Triangle): similar T1 T2 → match T1,T2 with
+  | (Triangle.ofPoints A B C) ,(Triangle.ofPoints D E F) =>
+    |(A─B)| / |(D─E)| = |(B─C)| / |(E─F)| ∧ |(A─B)| / |(D─E)| = |(B─C)| / |(E─F)|
+    ∧ |(C─A)| / |(F─D)| = |(A─B)| / |(D─E)| ∧ ∠ A:B:C = ∠ D:E:F
+    ∧ ∠ A:C:B = ∠ D:F:E ∧ ∠ B:A:C = ∠ E:D:F
+
+-- Propositions from Euclid's Elements Book I --
+axiom proposition_5 : ∀ (a b c d e : Point) (AB BC AC : Line), formTriangle a b c AB BC AC ∧ (|(a─b)| = |(a─c)|) ∧ (between a b d) ∧ (between a c e) → (∠ a:b:c) = (∠ a:c:b) ∧ (∠ c:b:d) = (∠ b:c:e)
+axiom proposition_5' : ∀ (a b c : Point) (AB BC AC : Line), formTriangle a b c AB BC AC ∧ (|(a─b)| = |(a─c)|) → ((∠ a:b:c : ℝ) = ∠ a:c:b)
+axiom proposition_13 : ∀ (a b c d : Point) (AB CD : Line), AB ≠ CD ∧ distinctPointsOnLine a b AB ∧ distinctPointsOnLine c d CD ∧ between d b c → ∠ c:b:a + ∠ a:b:d = ∟ + ∟
+axiom proposition_15 : ∀ (a b c d e : Point) (AB CD : Line), distinctPointsOnLine a b AB ∧ distinctPointsOnLine c d CD ∧ e.onLine AB ∧ e.onLine CD ∧ CD ≠ AB ∧ (between d e c) ∧ (between a e b) → (∠ a:e:c : ℝ) = (∠ d:e:b) ∧ (∠ c:e:b : ℝ) = (∠ a:e:d)
+axiom proposition_27 : ∀ (a b c d e f : Point) (AB CD EF : Line), distinctPointsOnLine a b AB ∧ distinctPointsOnLine c d CD ∧ distinctPointsOnLine e f EF ∧ (between a e b) ∧ (between c f d) ∧ (b.sameSide d EF) ∧ ∠ a:e:f  = (∠ e:f:d) → ¬(AB.intersectsLine CD)
+axiom proposition_27' : ∀ (a d e f : Point) (AB CD EF : Line), distinctPointsOnLine a e AB ∧ distinctPointsOnLine f d CD ∧ distinctPointsOnLine e f EF ∧ a.opposingSides d EF ∧ ∠ a:e:f = (∠ e:f:d) → ¬(AB.intersectsLine CD)
+axiom proposition_28 : ∀ (a b c d e f g h : Point) (AB CD EF : Line), distinctPointsOnLine a b AB ∧ distinctPointsOnLine c d CD ∧ distinctPointsOnLine e f EF ∧ (between a g b) ∧ (between c h d) ∧ (between e g h) ∧ (between g h f) ∧ (b.sameSide d EF) ∧ (∠ e:g:b = ∠ g:h:d ∨ ∠ b:g:h + ∠ g:h:d = ∟ + ∟) → ¬(AB.intersectsLine CD)
+axiom proposition_29 : ∀ (a b c d e f g h : Point) (AB CD EF : Line), distinctPointsOnLine a b AB ∧ distinctPointsOnLine c d CD ∧ distinctPointsOnLine e f EF ∧ (between a g b) ∧ (between c h d) ∧ (between e g h) ∧ (between g h f) ∧ (b.sameSide d EF) ∧ ¬(AB.intersectsLine CD) → ∠ a:g:h = ∠ g:h:d ∧ ∠ e:g:b = ∠ g:h:d ∧ ∠ b:g:h + ∠ g:h:d = ∟ + ∟
+axiom proposition_29' : ∀ (a b c d e g h : Point) (AB CD EF : Line), distinctPointsOnLine a b AB ∧ distinctPointsOnLine c d CD ∧ distinctPointsOnLine g h EF ∧ (between a g b) ∧ (between c h d) ∧ (between e g h) ∧ (b.sameSide d EF) ∧ ¬(AB.intersectsLine CD) → ∠ a:g:h = ∠ g:h:d ∧ ∠ e:g:b = ∠ g:h:d ∧ ∠ b:g:h + ∠ g:h:d = ∟ + ∟
+axiom proposition_29'' : ∀ (a b d g h : Point) (AB CD GH : Line), distinctPointsOnLine a b AB ∧ distinctPointsOnLine h d CD ∧ distinctPointsOnLine g h GH ∧ (between a g b) ∧ (b.sameSide d GH) ∧ ¬(AB.intersectsLine CD) → ∠ a:g:h = ∠ g:h:d ∧ ∠ b:g:h + ∠ g:h:d = ∟ + ∟
+axiom proposition_29''' : ∀ (a d g h : Point) (AB CD GH : Line),distinctPointsOnLine a g AB ∧ distinctPointsOnLine h d CD ∧ distinctPointsOnLine g h GH ∧a.opposingSides d GH ∧ ¬(AB.intersectsLine CD) → ∠ a:g:h = ∠ g:h:d
+axiom proposition_29'''' : ∀ (b d e g h : Point) (AB CD EF : Line), distinctPointsOnLine g b AB ∧ distinctPointsOnLine h d CD ∧ distinctPointsOnLine e h EF ∧ between e g h  ∧ b.sameSide d EF ∧ ¬(AB.intersectsLine CD) → ∠ e:g:b = ∠ g:h:d
+axiom proposition_29''''' : ∀ (b d g h : Point) (AB CD EF : Line), distinctPointsOnLine g b AB ∧ distinctPointsOnLine h d CD ∧ distinctPointsOnLine g h EF ∧ b.sameSide d EF ∧ ¬(AB.intersectsLine CD) → ∠ b:g:h + ∠ g:h:d = ∟ + ∟
+axiom proposition_32 : ∀ (a b c d : Point) (AB BC AC : Line), formTriangle a b c AB BC AC ∧ (between b c d) → ∠ a:c:d = ∠ c:a:b + ∠ a:b:c ∧ ∠ a:b:c + ∠ b:c:a + ∠ c:a:b = ∟ + ∟
+axiom proposition_34 : ∀ (a b c d : Point) (AB CD AC BD BC : Line), formParallelogram a b c d AB CD AC BD ∧ distinctPointsOnLine b c BC → |(a─b)| = |(c─d)| ∧ |(a─c)| = |(b─d)| ∧ ∠ a:b:d = ∠ a:c:d ∧ ∠ b:a:c  = ∠ c:d:b ∧ Triangle.area △ a:b:c = Triangle.area △ d:c:b
+axiom proposition_34' : ∀ (a b c d : Point) (AB CD AC BD : Line), formParallelogram a b c d AB CD AC BD → |(a─b)| = |(c─d)| ∧ |(a─c)| = |(b─d)| ∧ ∠ a:b:d = ∠ a:c:d ∧ ∠ b:a:c = ∠ c:d:b
+
+-- Proof Tactics --
+Your response must be a tactic proof built from the following tactics:
+
+1. "euclid_intros"
+This tactic introduces universally quantified variables and premises of the current goal into the proof context. No names are required.
+
+2. "euclid_apply <rule> <args>" and "euclid_apply <rule> <args> as <name>"
+These two tactics instantiate <rule> with <args> and prove premise P from the local proof context. 
+Note that the "euclid_apply <rule> <args> as <name>" is ONLY applicable if the <rule> produces an existentially quantified proposition, i.e., has the form ∀ (<args> : Types) ... P -> ∃ x , Q(x).
+If <rule> has the form ∀ (<args> : Types) ... P -> Q, proposition Q is added to the proof context if the tactic is applied successfully.
+If <rule> has the form ∀ (<args> : Types) ... P -> ∃ x , Q(x), object x and premise Q(x) are added to the proof context if the tactic is applied successfully.
+usage examples:
+  euclid_apply between_if a b c
+  euclid_apply line_from_points p1 p2 as M
+
+3. "have <name> : <claim> := by <proof>"
+This tactic proves a lemma <claim>. The <name> is optional, and you need to use euclid_finish at the end of <proof>.
+
+4. "euclid_assert <P>"
+This tactic proves proposition <P> from the current proof context and the above axioms using an SMT solver. Equivalent to "have : <P> := by euclid_finish".
+
+5. "use <X>"
+This tactic proves an existentially quantified proposition by providing the witness <X> for the quantifier.
+
+7. "euclid_finish"
+This tactic resolves the proof goal from the current proof context and the above axioms using an SMT solver.
+
+-- Guidelines --
+1. Response Format: Present your proof within THREE angle brackets by <<<Your Proof>>>. Do not add any annotations/explanations in your proof. Do not use markdown syntax.
+2. You can use standard Lean tactics such as "by_cases", "cases", "split_ands" and "constructor" to structure your proof. But, you should not use imperative Lean tactics, such as `rw` or `simp`.
+3. When applying a proposition using "euclid_apply", pay attention to the order of variables in the original proposition.

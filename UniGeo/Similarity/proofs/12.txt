@@ -1,0 +1,7 @@
+∠T and∠TVU are supplementary
+∠W≅∠W
+∠UVW+∠TVU=180°
+∠T+∠TVU=180°
+∠UVW+∠TVU=∠T+∠TVU
+∠UVW=∠T
+△UVW~△STW

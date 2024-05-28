@@ -1,0 +1,8 @@
+VW⟂UW
+TW⟂UV
+∠UTW≅∠VTW
+∠V+∠U=90°
+∠V+∠TWV=90°
+∠V+∠TWV=∠V+∠U
+∠TWV=∠U
+△TUW~△TWV

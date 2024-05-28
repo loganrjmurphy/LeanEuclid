@@ -1,0 +1,7 @@
+U is the midpoint of QS
+QS⟂QT
+QS⟂RS
+∠Q≅∠S
+QU≅SU
+∠QUT≅∠RUS
+△QTU≅△SRU

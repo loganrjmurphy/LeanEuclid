@@ -1,0 +1,1 @@
+Given W Y ≅ V X and V Y ≅ U X. V is the midpoint of U W. Complete the proof that △ V W Y ≅ △ U V X.

@@ -1,0 +1,1 @@
+Given T U ≅ R S. R S ∥ T U. Complete the proof that △ R T U ≅ △ T R S.

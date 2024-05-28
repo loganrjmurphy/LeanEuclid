@@ -1,0 +1,1 @@
+Given X Y ∥ V W and V Z ∥ W Y and Y Z ∥ V W. V X ≅ W Y. Complete the proof that V Y ≅ W X.

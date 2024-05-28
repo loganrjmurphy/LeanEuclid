@@ -1,0 +1,6 @@
+∠STW and∠TWV are supplementary
+∠STW+∠TWV=180°
+∠RTS+∠STW=180°
+∠STW+∠TWV=∠RTS+∠STW
+∠TWV=∠RTS
+SU∥VX

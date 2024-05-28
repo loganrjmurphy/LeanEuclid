@@ -1,0 +1,8 @@
+GJ⟂IJ
+HJ⟂GI
+∠IHJ≅∠GHJ
+∠G+∠I=90°
+∠G+∠GJH=90°
+∠G+∠GJH=∠G+∠I
+∠GJH=∠I
+△HIJ~△HJG

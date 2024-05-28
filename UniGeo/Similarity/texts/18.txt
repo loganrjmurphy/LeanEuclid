@@ -1,0 +1,1 @@
+Given V W ⟂ U W and T W ⟂ U V. Complete the proof that △ T U W ~ △ T W V.

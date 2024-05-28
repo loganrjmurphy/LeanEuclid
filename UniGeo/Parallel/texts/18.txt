@@ -1,0 +1,1 @@
+Given X Y ∥ W Z and ∠Y ≅ ∠ W X Y. Complete the proof that ∠ V W Z ≅ ∠ V Z W.

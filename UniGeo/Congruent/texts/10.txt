@@ -1,0 +1,1 @@
+Given R S ⟂ Q S and Q S ⟂ Q T. U is the midpoint of Q S. Complete the proof that △ R S U ≅ △ T Q U.

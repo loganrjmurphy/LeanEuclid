@@ -1,0 +1,1 @@
+Given P R ∥ Q S. Complete the proof that △ P R T ~ △ S Q T.
