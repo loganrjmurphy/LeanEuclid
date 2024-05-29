@@ -11,7 +11,7 @@ RUN git clone https://github.com/cvc5/cvc5
 WORKDIR cvc5
 RUN ./configure.sh --auto-download
 WORKDIR build
-RUN make -j$(nproc)
+RUN make -j8
 RUN sudo make install
 WORKDIR /LeanEuclid
 
@@ -20,7 +20,7 @@ RUN git clone https://github.com/Z3Prover/z3
 WORKDIR z3
 RUN python3 scripts/mk_make.py
 WORKDIR build
-RUN make -j$(nproc)
+RUN make -j8
 RUN sudo make install
 WORKDIR /LeanEuclid
 
