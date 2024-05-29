@@ -24,9 +24,10 @@ RUN make -j8
 RUN make install
 WORKDIR /LeanEuclid
 
-# Install smt-portfolio.
-RUN pip3 install --upgrade pip
-RUN pip3 install smt-portfolio
+# Install smt-portfolio in venv.
+RUN python3 -m venv venv
+RUN venv/bin/pip install smt-portfolio
+ENV PATH="/LeanEuclid/venv/bin:${PATH}"
 
 # Install elan.
 ENV ELAN_HOME="/.elan"
@@ -37,4 +38,3 @@ RUN curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -
 RUN lake script run check
 RUN lake exe cache get
 RUN lake build SystemE Book UniGeo E3
-RUN lake -R -Kenv=dev build SystemE:docs
