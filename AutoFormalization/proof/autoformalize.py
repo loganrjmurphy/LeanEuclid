@@ -10,7 +10,9 @@ from AutoFormalization.utils import *
 
 
 def preceding_propositions(idx):
-    with open("AutoFormalization/proof/book_propositions.json", "r", encoding="utf-8") as f:
+    with open(
+        "AutoFormalization/proof/book_propositions.json", "r", encoding="utf-8"
+    ) as f:
         propositions = json.load(f)
     pre_props = []
     for i in range(1, idx):

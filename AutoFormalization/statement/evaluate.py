@@ -6,6 +6,7 @@ import tqdm
 from E3.checker import Checker
 from E3.utils import ROOT_DIR
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -32,14 +33,9 @@ def main():
     )
     parser.add_argument(
         "--mode",
-        choices=[
-            "bvars", 
-            "skipApprox", 
-            "onlyApprox", 
-            "full"
-        ],
+        choices=["bvars", "skipApprox", "onlyApprox", "full"],
         default="skipApprox",
-        help="E3 checker mode"
+        help="E3 checker mode",
     )
     parser.add_argument(
         "--reasoning",
@@ -112,7 +108,7 @@ def main():
                         cnt += 1
                 except Exception as e:
                     print(e)
-                    continue 
+                    continue
 
     print(f"cnt: {cnt}, tot: {tot}, acc: {(cnt/tot)*100:.2f}%")
 

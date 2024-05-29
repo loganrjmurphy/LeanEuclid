@@ -1,4 +1,5 @@
 #!/bin/bash
+# This script was designed to run on GitHub Codespaces.
 
 # Install elan.
 curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | bash -s -- -y
@@ -18,6 +19,7 @@ cd ../..
 
 pip install smt-portfolio
 
+# Build the Lean project.
 lake script run check
 lake exe cache get
 lake build SystemE Book UniGeo E3
