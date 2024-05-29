@@ -12,7 +12,7 @@ WORKDIR cvc5
 RUN ./configure.sh --auto-download
 WORKDIR build
 RUN make -j8
-RUN sudo make install
+RUN make install
 WORKDIR /LeanEuclid
 
 # Build and Install Z3.
@@ -21,7 +21,7 @@ WORKDIR z3
 RUN python3 scripts/mk_make.py
 WORKDIR build
 RUN make -j8
-RUN sudo make install
+RUN make install
 WORKDIR /LeanEuclid
 
 # Install smt-portfolio.
