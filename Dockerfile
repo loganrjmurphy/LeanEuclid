@@ -4,7 +4,7 @@ WORKDIR /LeanEuclid
 COPY . .
 
 # Install dependencies.
-RUN apt-get update && apt-get install -y curl git python3 python3-pip
+RUN apt-get update && apt-get install -y curl git cmake python3 python3-pip
 
 # Install elan.
 ENV ELAN_HOME="/.elan"
