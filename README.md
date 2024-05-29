@@ -67,6 +67,8 @@ Optionally, you can:
 1. Run `lake -R -Kenv=dev build SystemE:docs` to build the documentation
 1. View the auto-generated documentation locally at ./lake/build/doc, e.g., using `python -mhttp.server`
 
+If you have problems building the project, [Dockerfile](./Dockerfile) and [scripts/build.sh](./scripts/build.sh) may serve as useful references.
+
 
 ## The Formal System E
 
