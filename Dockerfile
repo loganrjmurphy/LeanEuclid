@@ -4,12 +4,7 @@ WORKDIR /LeanEuclid
 COPY . .
 
 # Install dependencies.
-RUN apt-get update && apt-get install -y curl git cmake python3 python3-pip
-
-# Install elan.
-ENV ELAN_HOME="/.elan"
-ENV PATH="${ELAN_HOME}/bin:${PATH}"
-RUN curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | bash -s -- -y
+RUN apt-get update && apt-get install -y curl git cmake python3-venv python3-pip
 
 # Build and Install CVC5.
 RUN git clone https://github.com/cvc5/cvc5
@@ -32,6 +27,11 @@ WORKDIR /LeanEuclid
 # Install smt-portfolio.
 RUN pip3 install --upgrade pip
 RUN pip3 install smt-portfolio
+
+# Install elan.
+ENV ELAN_HOME="/.elan"
+ENV PATH="${ELAN_HOME}/bin:${PATH}"
+RUN curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | bash -s -- -y
 
 # Build the Lean project.
 RUN lake script run check
