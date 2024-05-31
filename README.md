@@ -169,4 +169,4 @@ In our paper, we used LeanEuclid to test state-of-the-art LLMs on theorem statem
 ## Acknowledgements
 
 * We use ([our own fork](https://github.com/yangky11/lean-smt) of) [lean-smt](https://github.com/ufmg-smite/lean-smt) for running SMT solvers from Lean.
-* There are concurrent efforts on formalizing Euclidean geometry in Lean (e.g., [EG](https://github.com/jjdishere/EG) and [Hernandez-Espiet's work](https://github.com/leanprover-community/mathlib4/pull/7300)). To our knowledge, none of them performs diagrammatic reasoning automatically.
+* There are concurrent efforts on formalizing Euclidean geometry in Lean (e.g., [EG](https://github.com/jjdishere/EG) and [Hernandez-Espiet's work](https://github.com/leanprover-community/mathlib4/pull/7300)). To the best of our knowledge, LeanEuclid is unique in its use of external solvers to handle diagrammatic reasoning, which is typically performed explicitly. However, this comes at the expense of [breaking soundness](https://github.com/loganrjmurphy/LeanEuclid/blob/master/SystemE/Meta/Smt/Solver.lean#L44-L47). 
