@@ -2,10 +2,11 @@ import SystemE.Meta.Smt.ELang
 import SystemE.Theory.Relations
 import SystemE.Theory.Sorts
 import Lean
+import Std.Data.HashMap
 
 set_option autoImplicit false
 
-open Lean Elab Tactic Meta
+open Lean Elab Tactic Meta Std
 
 namespace SystemE.Smt
 
@@ -42,7 +43,7 @@ def addVar (x : FVarId) (y : String) : EsmtM Unit :=
   modify fun Γ => {Γ with fetchIdName := Γ.fetchIdName.insert x y, numId := Γ.numId + 1}
 
 def getSanitizedName! (fvarId : FVarId) : EsmtM String := do
-  return (← get).fetchIdName.find! fvarId
+  return (← get).fetchIdName.get! fvarId
 
 /- Translate an Esmt to a List of Strings, formatted as SMT-Lib2 commands
    This is only really used for tracing/debugging.
@@ -93,7 +94,7 @@ def getSort! : Expr → ESort
 
 
 def getSanitizedName! (fvarId : FVarId) : EsmtM String := do
-  match (← get).fetchIdName.find? fvarId with
+  match (← get).fetchIdName.get? fvarId with
   | none => throwError "[SystemE.Smt] translation error : variable not found"
   | some v => return v
 
