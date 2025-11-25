@@ -310,7 +310,7 @@ axiom intersection_circle_line_2: ∀ (a : Point) (α : Circle) (L: Line),
 -- ********
 
 axiom intersection_circle_circle_1: ∀ (a b : Point) (α β : Circle),
-  ¬(a.outsideCircle α) ∧ ¬(b.outsideCircle α) ∧ (a.insideCircle β) ∧ (b.outsideCircle β) →
+  (a.onCircle α) ∧ ¬(b.outsideCircle α) ∧ (a.insideCircle β) ∧ (b.outsideCircle β) →
    α.intersectsCircle β
 
 -- ********
