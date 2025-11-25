@@ -410,7 +410,7 @@ def euclidTheory : List Smt.Command := [
   (forall ((a Point) (b Point) (alpha Circle) (beta Circle))
     (=>
       (and
-        (or (OnC a alpha) (Inside a alpha))
+        (OnC a alpha)
         (or (OnC b alpha) (Inside b alpha))
         (Inside a beta)
         (not (Inside b beta))
