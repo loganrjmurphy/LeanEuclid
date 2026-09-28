@@ -97,7 +97,7 @@ formParallelogram : Point → Point → Point → Point → Line → Line → Li
 ### Tactics
 
 * [euclid_intros](Meta/Tactics/Intros.lean): Similar to `intros`, with some simple desugaring.
-* [euclid_apply](Meta/Tactics/Solve.lean): Apply a leema in the forward direction. When some premises are not available, it tries to fill in small reasoning gaps automatically using SMT solvers or other proof automation techniques. This is related to the notion of "direct consequences" in [Avigad et al., 2009].
+* [euclid_apply](Meta/Tactics/Solve.lean): Apply a lemma in the forward direction. When some premises are not available, it tries to fill in small reasoning gaps automatically using SMT solvers or other proof automation techniques. This is related to the notion of "direct consequences" in [Avigad et al., 2009].
 * [euclid_finish](Meta/Tactics/Solve.lean): Proves the current goal using proof automation if it is "simple enough," i.e., a direct consequence of the hypotheses. 
 
 ### Options 
