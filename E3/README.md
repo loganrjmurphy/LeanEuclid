@@ -90,11 +90,16 @@ Which is interpeted as follows: if there are more than `SHORTCIRCUIT_THRESHOLD` 
 
 Usually we invoke `E3` using the Python wrapper as explained See [here](https://github.com/loganrjmurphy/LeanEuclid/tree/master/AutoFormalization), but it can also be invoked direclty.
 
-To invoke `E3` manually, create a fill `foo.lean` with the following format: 
+To invoke `E3` manually, create a file `foo.lean` with the following format:
 
 ```lean
-def ground_expr : Expr := q({ground})
-def test_expr : Expr := q({test})
+import E3
+import Qq
+
+open Qq Lean
+
+def groundE : Expr := q({ground})
+def testE : Expr := q({test})
 
 def main (args : List String) : IO Unit := do 
     let xs ← parseArgs args

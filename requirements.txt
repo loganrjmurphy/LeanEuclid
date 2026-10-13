@@ -1,0 +1,6 @@
+# Core SMT automation and E3 approximate equivalence checking.
+smt-portfolio==1.0.0
+python-Levenshtein==0.27.5
+# Optional autoformalization experiments and evaluation CLIs.
+openai==3.29.0
+tqdm==4.70.1

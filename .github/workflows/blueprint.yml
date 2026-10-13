@@ -15,12 +15,12 @@ jobs:
     name: Build project
     steps:
       - name: Checkout project
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Install elan
-        run: curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain leanprover/lean4:4.5.0
+        run: curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
 
       - name: Build and Install CVC5
         run: |
@@ -43,17 +43,24 @@ jobs:
       - name: Install Python and smt-portfolio
         run: |
           sudo apt-get update
-          sudo apt-get install python3 python3-pip
-          pip3 install smt-portfolio
+          sudo apt-get install -y python3 python3-pip python3-venv
+          python3 -m venv .venv
+          .venv/bin/python -m pip install -r requirements.txt
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
 
       - name: Get cache
-        run: ~/.elan/bin/lake exe cache get || true
+        run: ~/.elan/bin/lake exe cache get
 
       - name: Build project
-        run: ~/.elan/bin/lake build Book
+        run: |
+          ~/.elan/bin/lake script run check
+          ~/.elan/bin/lake build SystemE Book UniGeo E3
+          python -m unittest discover -s tests -v
+          python -m tests.smoke
+          python -m tests.examples
   
       - name: Cache mathlib docs
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             .lake/build/doc/Init
@@ -96,17 +103,17 @@ jobs:
 
       - name: Move documentation to `docs/docs`
         run: |
-          sudo chown -R runner docs
+          mkdir -p docs
           cp -r .lake/build/doc docs/docs
 
       - name: Upload docs & blueprint artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           path: docs/
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
 
       - name: Make sure the cache works
         run: |

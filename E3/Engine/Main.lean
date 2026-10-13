@@ -32,12 +32,14 @@ def E3Main (init : EvalCtx) : MetaM Unit := do
   | .justBvars =>
     if cfg.writeResult = false then
       IO.println s!"[E3] {result}"
-    writeResult cfg.instanceName cfg.outputFile result
+    else
+      writeResult cfg.instanceName cfg.outputFile result
   | .onlyApprox => runApproxEquiv result cfg ctx
   | .skipApprox =>
     result ← runStdEquiv cfg ctx result
     logInfo m!"{result}"
-    writeResult cfg.instanceName cfg.outputFile result
+    if cfg.writeResult then
+      writeResult cfg.instanceName cfg.outputFile result
   | .full =>
     result ← runStdEquiv cfg ctx result
     if result.equivSuccess then

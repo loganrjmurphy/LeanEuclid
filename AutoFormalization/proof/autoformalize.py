@@ -143,6 +143,10 @@ def main():
     parser.add_argument(
         "--num_examples", type=int, default=0, help="Number of examples"
     )
+    parser.add_argument(
+        "--model", default=os.environ.get("OPENAI_MODEL"),
+        help="OpenAI model ID (or set OPENAI_MODEL); overrides the historical paper models",
+    )
     args = parser.parse_args()
 
     random.seed(42)
@@ -183,7 +187,7 @@ def main():
 
         for i in tqdm.tqdm(testing_idx):
             model = GPT4(
-                model=(
+                model=args.model or (
                     "gpt-4-vision-preview"
                     if args.reasoning == "multi-modal"
                     else "gpt-4-1106-preview"
@@ -210,7 +214,7 @@ def main():
                     informal_proof = f.read().rstrip("\n")
                     informal_proof = re.sub(r"\n", ", ", informal_proof) + "."
             else:
-                instruction = instruction.replace(
+                instance_instruction = instruction.replace(
                     r"{PRECEDING_PROPOSITIONS}", preceding_propositions(i)
                 )
                 text_proof_path = os.path.join(
@@ -259,7 +263,7 @@ def main():
                     }
                 )
 
-            model.add_message("system", instruction)
+            model.add_message("system", instance_instruction if args.dataset == "Book" else instruction)
             model.add_message("user", content)
 
             for _ in range(args.num_query):
@@ -267,6 +271,7 @@ def main():
                     response = model.get_response()
                 except Exception as e:
                     print(f"An error occurred: {e}")
+                    continue
 
                 if response:
                     pattern = r"<<<(.*?)>>>"

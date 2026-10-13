@@ -4,7 +4,7 @@ import E3.Data.Config
 import Lean
 set_option autoImplicit false
 
-open Lean Meta SystemE.Smt
+open Std Lean Meta SystemE.Smt
 
 /- Miscellaneous helper functions for dealing with `Expr` and related types -/
 
@@ -54,8 +54,8 @@ def mergeMaps
   let mut m₃ : HashMap FVarId String := {}
   let keys := testMap.toList.map Prod.fst
   for x in keys do
-    match testMap[x] with
-    | some s => match swap[s] with | some t => m₃ := m₃.insert x t | _ => continue
+    match testMap[x]? with
+    | some s => match swap[s]? with | some t => m₃ := m₃.insert x t | _ => continue
     | _ => continue
   return m₃
 

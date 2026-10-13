@@ -25,7 +25,7 @@ by
   have : ∠T:W:V = ∠ R:T:S  := by euclid_finish
   have : ¬ VX.intersectsLine SU := by
     euclid_apply proposition_15 R W S U T RY SU
-    euclid_apply proposition_27' U V T W SU VX RY
+    euclid_apply proposition_27 U V T W SU VX RY
     euclid_finish
   euclid_finish
 

@@ -4,7 +4,7 @@ WORKDIR /LeanEuclid
 COPY . .
 
 # Install dependencies.
-RUN apt-get update && apt-get install -y curl git cmake m4 python3-venv python3-pip
+RUN apt-get update && apt-get install -y curl git cmake m4 build-essential python3-venv python3-pip
 
 # Build and Install CVC5.
 RUN git clone https://github.com/cvc5/cvc5
@@ -26,7 +26,7 @@ WORKDIR /LeanEuclid
 
 # Install smt-portfolio in venv.
 RUN python3 -m venv venv
-RUN venv/bin/pip install smt-portfolio
+RUN venv/bin/pip install -r requirements.txt
 ENV PATH="/LeanEuclid/venv/bin:${PATH}"
 
 # Install elan.

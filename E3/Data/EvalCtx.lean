@@ -2,7 +2,7 @@ import E3.Data.BoundVars
 import E3.Data.Config
 import UniGeo.Relations
 
-open Lean Elab Tactic Meta SystemE.Smt
+open Std Lean Elab Tactic Meta SystemE.Smt
 
 set_option autoImplicit false
 
@@ -147,21 +147,21 @@ def addProofLHS (x : EAssertion) (b : Bool) : PropEvalM Unit :=
   modify (λ s => {s with learnedLHS := s.learnedLHS.insert x b})
 
 def addProofRHS (x : EAssertion) (b : Bool) : PropEvalM Unit :=
-  modify (λ s => {s with learnedLHS := s.learnedLHS.insert x b})
+  modify (λ s => {s with learnedRHS := s.learnedRHS.insert x b})
 
 /- Queries-/
 
 def seenGoalLHS (x : EAssertion) : PropEvalM Bool := do
-  get >>= pure ∘ (Lean.HashMap.contains . x) ∘ EvalCtx.learnedLHS
+  get >>= pure ∘ (Std.HashMap.contains . x) ∘ EvalCtx.learnedLHS
 
 def seenGoalRHS (x : EAssertion) : PropEvalM Bool := do
-  get >>= pure ∘ (Lean.HashMap.contains . x) ∘ EvalCtx.learnedRHS
+  get >>= pure ∘ (Std.HashMap.contains . x) ∘ EvalCtx.learnedRHS
 
 def isProvenLHS (x : EAssertion) : PropEvalM Bool := do
-  match (← get).learnedLHS[x] with
+  match (← get).learnedLHS[x]? with
   | some b => return b | _ => return false
 
 def isProvenRHS (x : EAssertion) : PropEvalM Bool := do
-  match (← get).learnedRHS[x] with
+  match (← get).learnedRHS[x]? with
   | some b => return b
   | _ => return false

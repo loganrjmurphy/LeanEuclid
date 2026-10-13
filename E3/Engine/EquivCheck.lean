@@ -6,7 +6,7 @@ import SystemE.Smt
 open Qq
 set_option autoImplicit false
 
-open Lean Elab Command Tactic Meta Smt.Solver SystemE.Smt SystemE.Tactics
+open Std Lean Elab Command Tactic Meta Smt.Solver SystemE.Smt SystemE.Tactics
 
 /-- Modified version of `evalSmt`used by E3. Similar to the normal usage in `euclid_*` tactics, except we include different background theoeries depending on the context -/
 def evalSmt' (unsatCheck : Bool) (Γ : Option Esmt) (t : Nat) (x : EAssertion) : PropEvalM Bool := do

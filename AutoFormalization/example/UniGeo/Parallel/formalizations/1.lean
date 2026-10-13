@@ -25,7 +25,7 @@ by
   have : ∠ U:X:W =∠S:U:T := by euclid_finish
   have : ¬ WY.intersectsLine TV := by
     euclid_apply proposition_15 S X V T U SZ TV
-    euclid_apply proposition_27' W V X U WY TV SZ
+    euclid_apply proposition_27 W V X U WY TV SZ
     euclid_finish
   euclid_finish
 

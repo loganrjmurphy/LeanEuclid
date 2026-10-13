@@ -1,35 +1,19 @@
 import os
-import signal
 import subprocess
 import argparse
 import tqdm
 
-from subprocess import Popen, PIPE
-from AutoFormalization.utils import *
+from E3.process import run_lean
+from E3.utils import ROOT_DIR
 
 
-def check(lean_file):
+def check(lean_file, timeout=300):
     try:
-        command = ["lake", "env", "lean", "--run", lean_file]
-        process = Popen(
-            command, stdout=PIPE, stderr=PIPE, cwd=ROOT_DIR, preexec_fn=os.setsid
-        )
-        stdout, stderr = process.communicate(timeout=5)
-        if "error" not in stdout.decode() and "error" not in stderr.decode():
-            return True
-        else:
-            return False
-    except:
-        os.killpg(os.getpgid(process.pid), signal.SIGTERM)
-
-        def kill_running_process(process_name):
-            result = subprocess.run(["pgrep", process_name], stdout=subprocess.DEVNULL)
-            if not result.returncode:
-                subprocess.run(["pkill", process_name], stdout=subprocess.DEVNULL)
-
-        kill_running_process("cvc5")
-        kill_running_process("z3")
-
+        # Proof files contain declarations, not an executable `main`.
+        process = run_lean([os.path.abspath(lean_file)], timeout)
+        output = (process.stdout + process.stderr).decode(errors="replace")
+        return process.returncode == 0 and "declaration uses 'sorry'" not in output
+    except (OSError, subprocess.TimeoutExpired):
         return False
 
 

@@ -23,6 +23,8 @@ by
   euclid_apply (line_from_points f g) as FG
   euclid_apply (proposition_4 a b c d e g AB BC AC DE EG DG)
   euclid_apply (proposition_5' d g f DG FG DF)
+  -- Expose this diagrammatic fact before the case split to guide SMT instantiation.
+  euclid_assert f.sameSide e DG
   by_cases (d.sameSide g EF)
   · euclid_assert (∠ d:f:g > ∠ e:g:f)
     euclid_assert (∠ e:f:g > ∠ e:g:f)
