@@ -1,4 +1,5 @@
 """Exercise the experiment loops with a fake API, without making requests."""
+from contextlib import chdir
 from importlib import import_module
 from pathlib import Path
 import shutil
@@ -20,11 +21,21 @@ class GenerationTests(unittest.TestCase):
                         target = root / relative
                         target.parent.mkdir(parents=True, exist_ok=True)
                         shutil.copyfile(source, target)
+            for relative in (
+                "AutoFormalization/proof/book_propositions.json",
+                "AutoFormalization/proof/book_instruction.txt",
+                "AutoFormalization/statement/instruction.txt",
+            ):
+                target = root / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(original_root / relative, target)
+            unrelated_cwd = root / "unrelated"
+            unrelated_cwd.mkdir()
             models = [Mock(), Mock()]
             for model in models:
                 model.get_response.side_effect = [RuntimeError("simulated API failure"), "<<< trivial >>>"]
             argv = ["autoformalize", "--dataset", "Book", "--category", "", "--reasoning", "text-only", "--num_query", "2", "--model", "test-model"]
-            with patch.object(module, "ROOT_DIR", str(root)), patch.object(module, "GPT4", side_effect=models) as factory, patch.object(module.tqdm, "tqdm", return_value=[1, 3]), patch("sys.argv", argv):
+            with chdir(unrelated_cwd), patch.object(module, "ROOT_DIR", str(root)), patch.object(module, "GPT4", side_effect=models) as factory, patch.object(module.tqdm, "tqdm", return_value=[1, 3]), patch("sys.argv", argv):
                 if kind == "statement":
                     with patch.object(module, "Validator") as validator:
                         validator.return_value.validate.return_value = None

@@ -122,7 +122,7 @@ def main():
         else:
             instruction_head = "Your task is to take an English statement of a theorem from Euclidean Geometry (proof is omitted using the <prf> symbol) and formalize it using Lean 4 programming language, adhering to the following structures and guidelines:\n"
 
-    with open("AutoFormalization/statement/instruction.txt") as f:
+    with open(os.path.join(ROOT_DIR, "AutoFormalization/statement/instruction.txt"), encoding="utf-8") as f:
         instruction = instruction_head + f.read()
 
     for c in args.category:

@@ -22,8 +22,9 @@ class Validator:
         except (OSError, subprocess.TimeoutExpired) as exc:
             return str(exc)
         output = (process.stdout + process.stderr).decode(errors="replace").strip()
+        output = re.sub(r"/[^:]+:\d+:\d+: ", "", output)
         if process.returncode != 0:
             return output or f"Lean exited with status {process.returncode}"
         if output:
-            return re.sub(r"/[^:]+:\d+:\d+: ", "", output)
+            return output
         return None

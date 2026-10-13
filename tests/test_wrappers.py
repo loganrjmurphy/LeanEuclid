@@ -48,6 +48,16 @@ sys.exit(int(os.environ.get('FAKE_EXIT', '0')))
         with patch.dict(os.environ, {"FAKE_EXIT": "1", "FAKE_STDERR": "failed to load library"}):
             self.assertIn("failed to load library", self.validator.validate("True", "invalid"))
 
+    def test_validator_strips_locations_from_diagnostics(self):
+        for exit_code in ("0", "1"):
+            for stream in ("FAKE_STDOUT", "FAKE_STDERR"):
+                with self.subTest(exit_code=exit_code, stream=stream):
+                    with patch.dict(os.environ, {"FAKE_EXIT": exit_code, stream: "/tmp/example.lean:17:20: error: unknown identifier\n/tmp/example.lean:18:4: error: type mismatch\n"}):
+                        self.assertEqual(
+                            self.validator.validate("True", "invalid"),
+                            "error: unknown identifier\nerror: type mismatch",
+                        )
+
     def test_checker_accepts_new_result(self):
         with patch.dict(os.environ, {"FAKE_RESULT": "1"}):
             self.assertTrue(self.checker.check("True", "True", "good"))

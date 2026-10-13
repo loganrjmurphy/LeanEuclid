@@ -11,7 +11,7 @@ from AutoFormalization.utils import *
 
 def preceding_propositions(idx):
     with open(
-        "AutoFormalization/proof/book_propositions.json", "r", encoding="utf-8"
+        os.path.join(ROOT_DIR, "AutoFormalization/proof/book_propositions.json"), "r", encoding="utf-8"
     ) as f:
         propositions = json.load(f)
     pre_props = []
@@ -156,7 +156,7 @@ def main():
     else:
         instruction_head = "Your task is to formalize a proof of a theorem from Euclidean Geometry using the Lean 4 programming language, based on its English statement and proof, and formalized statement. The formalization should adhere to predefined structures and guidelines detailed below.\n"
 
-    with open(f"AutoFormalization/proof/{args.dataset.lower()}_instruction.txt") as f:
+    with open(os.path.join(ROOT_DIR, f"AutoFormalization/proof/{args.dataset.lower()}_instruction.txt"), encoding="utf-8") as f:
         instruction = instruction_head + f.read()
 
     for c in args.category:
