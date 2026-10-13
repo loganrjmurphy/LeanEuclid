@@ -23,7 +23,14 @@ by
   euclid_apply (line_from_points f g) as FG
   euclid_apply (proposition_4 a b c d e g AB BC AC DE EG DG)
   euclid_apply (proposition_5' d g f DG FG DF)
-  -- Expose this diagrammatic fact before the case split to guide SMT instantiation.
+  -- If g were between the rays DE and DF, angle addition would contradict
+  -- the strict angle comparison. Expose this before the diagrammatic case split.
+  euclid_assert ∠ e:d:g > ∠ e:d:f
+  euclid_assert g.sameSide f DE
+  have hgf : ¬ g.sameSide e DF := by
+    by_contra h
+    euclid_apply (sum_angles_onlyif d e f g DE DF)
+    euclid_finish
   euclid_assert f.sameSide e DG
   by_cases (d.sameSide g EF)
   · euclid_assert (∠ d:f:g > ∠ e:g:f)
