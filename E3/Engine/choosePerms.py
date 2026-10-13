@@ -94,7 +94,9 @@ class NameMap:
     sim: float
 
     def __eq__(self, other) -> bool:
-        self.name == other.name
+        if not isinstance(other, NameMap):
+            return NotImplemented
+        return self.name == other.name
 
 
 def readNames(data):

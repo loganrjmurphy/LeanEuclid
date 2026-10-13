@@ -4,19 +4,19 @@ WORKDIR /LeanEuclid
 COPY . .
 
 # Install dependencies.
-RUN apt-get update && apt-get install -y curl git cmake m4 python3-venv python3-pip
+RUN apt-get update && apt-get install -y curl git cmake m4 build-essential python3-venv python3-pip
 
 # Build and Install CVC5.
-RUN git clone https://github.com/cvc5/cvc5
+RUN git clone --depth 1 --branch cvc5-1.2.1 https://github.com/cvc5/cvc5
 WORKDIR cvc5
-RUN ./configure.sh --auto-download
+RUN ./configure.sh production --auto-download
 WORKDIR build
 RUN make -j8
 RUN make install
 WORKDIR /LeanEuclid
 
 # Build and Install Z3.
-RUN git clone https://github.com/Z3Prover/z3
+RUN git clone --depth 1 --branch z3-4.13.2 https://github.com/Z3Prover/z3
 WORKDIR z3
 RUN python3 scripts/mk_make.py
 WORKDIR build
@@ -26,13 +26,17 @@ WORKDIR /LeanEuclid
 
 # Install smt-portfolio in venv.
 RUN python3 -m venv venv
-RUN venv/bin/pip install smt-portfolio
+RUN venv/bin/pip install -r requirements.txt
 ENV PATH="/LeanEuclid/venv/bin:${PATH}"
 
 # Install elan.
 ENV ELAN_HOME="/.elan"
 ENV PATH="${ELAN_HOME}/bin:${PATH}"
 RUN curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | bash -s -- -y
+
+# Make Lake's shared library visible to native SMT plugins on Linux.
+RUN ln -s "$(lean --print-prefix)/lib/lean" /opt/lean-libs
+ENV LD_LIBRARY_PATH="/opt/lean-libs"
 
 # Build the Lean project.
 RUN lake script run check

@@ -43,8 +43,17 @@ ______________________________________________________________________
 ## Requirements
 
 * A working setup of [Lean 4](https://lean-lang.org/), including [elan](https://github.com/leanprover/elan) and [Lean's VSCode extension](https://lean-lang.org/lean4/doc/quickstart.html)
-* Install the latest version of [Z3](https://github.com/Z3Prover/z3) and [CVC5](https://cvc5.github.io/) and make sure they can be accessed from the command line
-* Install Python dependencies: `pip install smt-portfolio openai`
+* Install [Z3](https://github.com/Z3Prover/z3) and [CVC5](https://cvc5.github.io/) and make sure they can be accessed from the command line
+* Use the Lean version in `lean-toolchain` (currently **4.19.0**); elan selects it automatically. Keep `lake-manifest.json` to reproduce the pinned dependencies.
+* Create and activate a Python 3.11+ environment from the repository root:
+
+  ```sh
+  python3 -m venv .venv
+  source .venv/bin/activate
+  python -m pip install -r requirements.txt
+  ```
+
+  Keep this environment active when running Lake: the solvers use `smt-portfolio`, and E3's approximate checker invokes `python3` with `Levenshtein` installed. `requirements.txt` also includes the dependencies for the optional autoformalization scripts.
 * Find out the location of `smt-portfolio` and make sure Lean's VSCode extension can also access it. For example, if `which smt-portfolio` outputs `/Users/yangky/miniconda3/envs/lean/bin/smt-portfolio`, you should set `Server Env Paths` in Lean's VSCode extension as below:
 <img width="938" alt="image" src="https://github.com/loganrjmurphy/LeanEuclid/assets/5431913/abfc6d25-e2e4-462e-934d-a10b4cb4e96c">
 
@@ -56,16 +65,35 @@ Take the following steps to build the Lean project:
 
 1. Run `lake script run check` to check if the requirements are satisfied.
 2. Run `lake exe cache get` to download the [mathlib](https://github.com/leanprover-community/mathlib4) cache
-3. Run `lake build` to compile the formal system E
+3. Run `lake build SystemE Book UniGeo E3` to compile the formal system, the 48 Elements and 100 held-out UniGeo problems, and the equivalence checker. Plain `lake build` only builds SystemE.
 4. Open a file for Euclid's *Elements* in VS Code, e.g., [Book/Prop01.lean](Book/Prop01.lean). You should expect to see:
 
 ![Elements Prop1](https://github.com/loganrjmurphy/LeanEuclid/blob/master/images/Elements_prop1.png)
 
+On Linux, expose Lean's shared libraries before building or running E3 (the native SMT plugins need `libLake_shared.so`):
+
+```sh
+export LD_LIBRARY_PATH="$(lean --print-prefix)/lib/lean${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+```
+
+The first build can take several minutes: `lean-smt` precompiles native libraries, including mathlib, even after the mathlib cache is downloaded. Subsequent builds reuse these artifacts.
+
+
+To check the Python wrappers and run a small end-to-end test without an API key:
+
+```sh
+python -m unittest discover -s tests -v
+python -m tests.smoke
+# Also typecheck the few-shot examples (including the other 25 UniGeo problems):
+python -m tests.examples
+```
+
+The smoke test checks valid/invalid Lean statements and proofs, standard equivalence, and approximate equivalence. SMT-backed proofs retain the original project's trust assumptions described below.
 
 Optionally, you can:
 
 1. Run `lake -R -Kenv=dev build SystemE:docs` to build the documentation
-1. View the auto-generated documentation locally at ./lake/build/doc, e.g., using `python -mhttp.server`
+1. View the auto-generated documentation locally at .lake/build/doc, e.g., using `python -mhttp.server`
 
 If you have problems building the project, [Dockerfile](./Dockerfile) and [scripts/build.sh](./scripts/build.sh) may serve as useful references.
 

@@ -5,7 +5,11 @@ This folder contains a Python wrapper to autoformalize theorem statements and pr
 We currently use the OpenAI API for autoformalization, but it should be straightforward to plug any LLM into the wrapper.
 
 ### Setup 
-Make sure that your OpenAI API key is registered as an environment variable, or you can supply it explicitly in `AutoFormalization/utils.py`. Also make sure that LeanEuclid is in your Python path.
+Activate the root `.venv` described in the main README. For generation, set `OPENAI_API_KEY` in your environment and choose an available model using `--model MODEL_ID` or `OPENAI_MODEL`. The historical default model IDs are retained for reference and may no longer be available. No API key is needed for evaluation.
+
+Run the commands below **as modules from the repository root** so Python can resolve the `AutoFormalization` and `E3` packages. Generation sends prompts to the configured API and incurs API usage.
+
+After editing Book theorem signatures, run `python scripts/export_propositions.py` to refresh the theorem lists included in the proof prompts.
 
 ### Choosing a Dataset 
 We will provide some usage examples targeting the *Elements* dataset. To target UniGeo instead, replace any instances of the arguments `--dataset Book --category ""` with `--dataset UniGeo --category <cat>`, where `<cat>` is one of `{"Parallel","Triangle","Quadrilateral","Congruent","Similarity"}`.
@@ -16,7 +20,7 @@ We will provide some usage examples targeting the *Elements* dataset. To target 
 To autoformalize theorem statements from *Elements*, go to the root directory of LeanEuclid and run 
 
 ```
-python3 AutoFormalization/statement/autoformalize.py --dataset Book --category "" --reasoning text-only --num_query 1 --num_examples 3
+python -m AutoFormalization.statement.autoformalize --dataset Book --category "" --reasoning text-only --num_query 1 --num_examples 3
 ```
 
 The arguments `--dataset Book` and `--category ""` indicate that we are formalizing all 43 propositions in the test set of *Elements*. The argument `--num_query` indicates the number of chances the model is given to produce a well-formed Lean expression (of course, specifying `num_query=1` means that some propositions may not be formalized this round). The argument `num-examples` indicates the number of "shots" to be included in the prompt.
@@ -40,7 +44,7 @@ Once you've formalized a set of theoerem statements, you can use our equivalence
 For instance, to evaluate the theorems formalized from the previous example, go to the root directory of LeanEuclid and run: 
 
 ```
-python3 AutoFormalization/statement/evaluate.py --dataset Book --category "" --reasoning text-only --num_examples 3
+python -m AutoFormalization.statement.evaluate --dataset Book --category "" --reasoning text-only --num_examples 3
 ```
 
 The default configuration of the script uses the standard equivalence checking procedure (skipping the more expensive approximate equivalence checking) and allocates 15 seconds to prove each direction of the equivalence. In the experiments reported in the paper, we used 60 second timeouts. For the 43 theorems in *Elements*, using 15-second timeouts takes about 15 minutes on a standard laptop.
@@ -54,7 +58,7 @@ The approximate equivalence checker tries to quantify how "close" an autoformali
 To enable the approximate equivalence checker, you can provide an additional argument `mode` to the checker. Providing the argument "onlyApprox" will skip the standard equivalence checking and only execute the approximate analysis. Providing the argument "full" will execute both analyses. E.g., 
 
 ```
-python3 AutoFormalization/statement/evaluate.py --dataset Book --category "" --reasoning text-only --num_examples 3 --mode "skipApprox"
+python -m AutoFormalization.statement.evaluate --dataset Book --category "" --reasoning text-only --num_examples 3 --mode "onlyApprox"
 ```
 
 Note that the approximate equivalence checker will only run on target propositions whose number and type of bound variables matches those of the ground truth formalizations. This is usually only a minority (e.g., 33%) of the autoformalized theorem statements in a given batch. The time this will take depends on the quality of the predictions and configuration options, in our experience a typical batch from *Elements* will run for about 20-25 minutes on a standard laptop.
@@ -64,7 +68,7 @@ Note that the approximate equivalence checker will only run on target propositio
 To autoformalize proofs in Elements, go to the root directory of LeanEuclid and run 
 
 ```
-python3 AutoFormalization/proof/autoformalize.py --dataset Book --category "" --reasoning text-only --num_query 1 --num_examples 3
+python -m AutoFormalization.proof.autoformalize --dataset Book --category "" --reasoning text-only --num_query 1 --num_examples 3
 ```
 
 Autoformalizing the 43 propositions in the testing set of *Elements* as above should take roughly 6 minutes and ~250K tokens. The results, in this example, can be found in the subdirectory `result/proof/Book/text-only/3shot/`.
@@ -72,7 +76,7 @@ Autoformalizing the 43 propositions in the testing set of *Elements* as above sh
 Unlike theorem statements, Lean does not need any assistance in evaluating proofs (aside, of course, from LeanEuclid's proof automation). You can get Lean to check all of the proofs produced in the previous steps by running 
 
 ```
-python3 AutoFormalization/proof/evaluate.py --dataset Book --category "" --reasoning text-only --num_examples 3
+python -m AutoFormalization.proof.evaluate --dataset Book --category "" --reasoning text-only --num_examples 3
 ```
 
 After the proofs are checked, the aggregate results will be displayed akin to the following:

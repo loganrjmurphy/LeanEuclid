@@ -2,58 +2,94 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 jobs:
   build_project:
-    runs-on: ubuntu-latest
-    name: Build project
+    runs-on: ubuntu-24.04
+    name: Build and test
     steps:
       - name: Checkout project
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Install elan
-        run: curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain leanprover/lean4:4.5.0
-
-      - name: Build and Install CVC5
         run: |
-          git clone https://github.com/cvc5/cvc5
-          cd cvc5
-          ./configure.sh --auto-download
-          cd build
-          make -j$(nproc)
-          sudo make install
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
 
-      - name: Build and Install Z3
+      - name: Install pinned SMT solvers
         run: |
-          git clone https://github.com/Z3Prover/z3
-          cd z3
-          python3 scripts/mk_make.py
-          cd build
-          make -j$(nproc)
-          sudo make install
+          mkdir -p "$RUNNER_TEMP/solvers"
+          cd "$RUNNER_TEMP/solvers"
+          curl -fL --retry 3 -o cvc5.zip https://github.com/cvc5/cvc5/releases/download/cvc5-1.2.1/cvc5-Linux-x86_64-static.zip
+          curl -fL --retry 3 -o z3.zip https://github.com/Z3Prover/z3/releases/download/z3-4.13.2/z3-4.13.2-x64-glibc-2.35.zip
+          echo '6d44abc233980a14d72cc5809287d27c3335b1d6ee863381d0b5ffcbd0d8de56  cvc5.zip' | sha256sum -c -
+          echo '642f569aa40ef3d1727ad3cdb8c7f5145ed1a58e0b49e89b46878326fe111b61  z3.zip' | sha256sum -c -
+          unzip -q cvc5.zip
+          unzip -q z3.zip
+          echo "$PWD/cvc5-Linux-x86_64-static/bin" >> "$GITHUB_PATH"
+          echo "$PWD/z3-4.13.2-x64-glibc-2.35/bin" >> "$GITHUB_PATH"
 
       - name: Install Python and smt-portfolio
         run: |
           sudo apt-get update
-          sudo apt-get install python3 python3-pip
-          pip3 install smt-portfolio
+          sudo apt-get install -y python3 python3-pip python3-venv
+          python3 -m venv .venv
+          .venv/bin/python -m pip install -r requirements.txt
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: Configure Lean shared libraries
+        timeout-minutes: 10
+        run: |
+          ~/.elan/bin/elan toolchain install "$(cat lean-toolchain)"
+          lean_prefix="$(~/.elan/bin/lean --print-prefix)"
+          test -f "$lean_prefix/lib/lean/libLake_shared.so"
+          echo "LD_LIBRARY_PATH=$lean_prefix/lib/lean${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" >> "$GITHUB_ENV"
+
+      - name: Restore compiled Lean dependencies
+        id: lean-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .lake
+          key: ${{ runner.os }}-lean-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-lean-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
 
       - name: Get cache
-        run: ~/.elan/bin/lake exe cache get || true
+        run: ~/.elan/bin/lake exe cache get
 
       - name: Build project
-        run: ~/.elan/bin/lake build Book
+        id: build
+        run: |
+          ~/.elan/bin/lake script run check
+          ~/.elan/bin/lake build SystemE Book UniGeo E3
+
+      - name: Run regression tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Run Lean and E3 smoke tests
+        run: python -m tests.smoke
+
+      - name: Check few-shot examples
+        run: python -m tests.examples
   
+      - name: Save compiled Lean dependencies
+        if: always() && steps.build.outcome != 'skipped' && steps.build.outcome != 'cancelled' && steps.lean-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .lake
+          key: ${{ steps.lean-cache.outputs.cache-primary-key }}
+
       - name: Cache mathlib docs
-        uses: actions/cache@v3
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        uses: actions/cache@v4
         with:
           path: |
             .lake/build/doc/Init
@@ -68,6 +104,7 @@ jobs:
             MathlibDoc-
 
       - name: Build documentation
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: ~/.elan/bin/lake -R -Kenv=dev build Book:docs
 
       #- name: Build blueprint and copy to `docs/blueprint`
@@ -95,19 +132,28 @@ jobs:
       #      ~/.elan/bin/lake exe checkdecls blueprint/lean_decls
 
       - name: Move documentation to `docs/docs`
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: |
-          sudo chown -R runner docs
+          mkdir -p docs
           cp -r .lake/build/doc docs/docs
 
       - name: Upload docs & blueprint artifact
-        uses: actions/upload-pages-artifact@v1
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        uses: actions/upload-pages-artifact@v3
         with:
           path: docs/
 
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: build_project
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
-
-      - name: Make sure the cache works
-        run: |
-          mv docs/docs .lake/build/doc
+        uses: actions/deploy-pages@v4

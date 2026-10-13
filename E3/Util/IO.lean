@@ -7,7 +7,9 @@ open Lean Elab Command
 
 set_option autoImplicit false
 
-def writeResult (name fileName : String) (x : E3Result) : IO Unit :=
+def writeResult (name fileName : String) (x : E3Result) : IO Unit := do
+  if let some parent := (System.FilePath.mk fileName).parent then
+    IO.FS.createDirAll parent
   IO.FS.writeFile (fileName) (x.toJson (name))
 
 
@@ -50,6 +52,9 @@ def readPermOutput (file: String) : IO (Except String ((List String) × (List (L
 
 def permutationHeuristic (inFile outFile raw guarded tjson gjson : String) (nperms : Nat) :  IO (Except String (List String × List (List String))) := do
   let fileContents := formatPermutationJson raw guarded tjson gjson
+  for file in [inFile, outFile] do
+    if let some parent := (System.FilePath.mk file).parent then
+      IO.FS.createDirAll parent
   IO.FS.writeFile inFile fileContents
   let process ← permChooser inFile outFile nperms
   process.stdin.flush

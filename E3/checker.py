@@ -1,9 +1,9 @@
 import os
-import signal
+import subprocess
 import json
 
-from E3.utils import *
-from subprocess import Popen, PIPE
+from E3.utils import ROOT_DIR, format_lean_checker_file
+from E3.process import run_lean
 
 
 class Checker:
@@ -15,10 +15,12 @@ class Checker:
         mode="skipApprox",
         tmp_path=os.path.join(ROOT_DIR, "tmp", "check"),
         result_path=os.path.join(ROOT_DIR, "results"),
+        timeout=600,
     ):
-        self.tmp_path = tmp_path
+        self.tmp_path = os.path.abspath(tmp_path)
+        self.timeout = timeout
         os.makedirs(self.tmp_path, exist_ok=True)
-        self.result_path = result_path
+        self.result_path = os.path.abspath(result_path)
         os.makedirs(self.result_path, exist_ok=True)
 
         self.nPermutations = nperms
@@ -28,14 +30,16 @@ class Checker:
 
     def check(self, ground, test, instanceName):
         tmpFile = os.path.join(self.tmp_path, instanceName + ".lean")
-        with open(tmpFile, "w") as file:
+        os.makedirs(os.path.dirname(tmpFile), exist_ok=True)
+        with open(tmpFile, "w", encoding="utf-8") as file:
             leanFile = format_lean_checker_file(ground, test)
             file.write(leanFile)
         outputJsonFile = os.path.join(self.result_path, instanceName + ".json")
+        os.makedirs(os.path.dirname(outputJsonFile), exist_ok=True)
+        # A failed re-check must never reuse a previous successful result.
+        if os.path.exists(outputJsonFile):
+            os.remove(outputJsonFile)
         command = [
-            "lake",
-            "env",
-            "lean",
             "--run",
             tmpFile,
             instanceName,
@@ -46,19 +50,12 @@ class Checker:
             "true",
             outputJsonFile,
         ]
-        process = Popen(
-            command, stdin=PIPE, stdout=PIPE, cwd=ROOT_DIR, preexec_fn=os.setsid
-        )
         try:
-            process.communicate()
+            process = run_lean(command, self.timeout)
+            if process.returncode != 0:
+                return False
             with open(outputJsonFile, "r", encoding="utf-8") as f:
                 data = json.load(f)
-
-            result = data[instanceName]["binary_check"]
-            if result == "equiv":
-                return True
-            else:
-                return False
-        except:
-            os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+            return data[instanceName].get("binary_check") == "equiv"
+        except (OSError, ValueError, KeyError, TypeError, subprocess.TimeoutExpired):
             return False

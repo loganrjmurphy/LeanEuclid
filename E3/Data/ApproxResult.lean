@@ -1,9 +1,10 @@
 import Lean
+import Std.Data.HashMap
 import E3.Util.String
 
 set_option autoImplicit false
 
-open Lean
+open Std Lean
 
 
 

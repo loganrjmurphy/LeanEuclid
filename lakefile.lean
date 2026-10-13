@@ -20,7 +20,7 @@ lean_lib E3 {
 
 require mathlib from git "https://github.com/leanprover-community/mathlib4" @ "v4.19.0"
 
-require smt from git "https://github.com/yangky11/lean-smt.git" @ "main"
+require smt from git "https://github.com/yangky11/lean-smt.git" @ "e0b66c4d599a985797e12bf36f1dae6556344ac0"
 
 def tmpFileDir := "tmp"
 
@@ -36,6 +36,13 @@ script check do
   checkAvailable "smt-portfolio"
   checkAvailable "z3"
   checkAvailable "cvc5"
+  checkAvailable "python3"
+  let python ← IO.Process.output {
+    cmd := "python3",
+    args := #["-c", "import Levenshtein"]
+  }
+  if python.exitCode != 0 then
+    throw $ IO.userError "Missing Python dependency Levenshtein. Activate .venv and install requirements.txt."
   println! "All requirements are satisfied."
   return 0
 
@@ -66,4 +73,4 @@ require checkdecls from git "https://github.com/PatrickMassot/checkdecls.git"
 
 meta if get_config? env = some "dev" then
 require «doc-gen4» from git
-  "https://github.com/leanprover/doc-gen4" @ "main"
+  "https://github.com/leanprover/doc-gen4" @ "v4.19.0"

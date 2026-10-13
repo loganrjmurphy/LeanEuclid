@@ -1,3 +1,4 @@
+import Aesop.BuiltinRules.DestructProducts
 import SystemE.Meta.Tactics.Util
 import SystemE.Meta.Smt.Solver
 
@@ -67,7 +68,13 @@ def finish : EuclidStepM Unit := do
     | some d =>
       applyHole (← d.toExpr.toSyntax) (← getUnusedUserName `h) |>.run Γ
       evalTactic $ ← `(tactic| try (clear ($(mkIdent Γ.holeName))))
-      evalTactic $ ← `(tactic| try aesop_destruct_products)
+      -- Aesop no longer exposes the `aesop_destruct_products` tactic.
+      -- Use its product-destructuring implementation directly.
+      let saved ← Lean.Elab.Tactic.saveState
+      try
+        let ((goal, _), _) ← (Aesop.BuiltinRules.destructProductsCore (← getMainGoal) .reducible).run
+        replaceMainGoal [goal]
+      catch _ => saved.restore
 
 end EuclidStep
 

@@ -4,6 +4,7 @@ Book/All.lean
 /.lake/*
 /.vscode/*
 /result
+/results
 /tmp
 /E3/_tmp/ 
 /E3/_out/
