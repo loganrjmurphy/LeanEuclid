@@ -70,6 +70,12 @@ Take the following steps to build the Lean project:
 
 ![Elements Prop1](https://github.com/loganrjmurphy/LeanEuclid/blob/master/images/Elements_prop1.png)
 
+On Linux, expose Lean's shared libraries before building or running E3 (the native SMT plugins need `libLake_shared.so`):
+
+```sh
+export LD_LIBRARY_PATH="$(lean --print-prefix)/lib/lean${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+```
+
 The first build can take several minutes: `lean-smt` precompiles native libraries, including mathlib, even after the mathlib cache is downloaded. Subsequent builds reuse these artifacts.
 
 

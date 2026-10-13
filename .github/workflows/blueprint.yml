@@ -45,10 +45,23 @@ jobs:
           .venv/bin/python -m pip install -r requirements.txt
           echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
 
+      - name: Configure Lean shared libraries
+        run: echo "LD_LIBRARY_PATH=$(lean --print-prefix)/lib/lean${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" >> "$GITHUB_ENV"
+
+      - name: Restore compiled Lean dependencies
+        id: lean-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .lake
+          key: ${{ runner.os }}-lean-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-lean-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
+
       - name: Get cache
         run: ~/.elan/bin/lake exe cache get
 
       - name: Build project
+        id: build
         run: |
           ~/.elan/bin/lake script run check
           ~/.elan/bin/lake build SystemE Book UniGeo E3
@@ -62,6 +75,13 @@ jobs:
       - name: Check few-shot examples
         run: python -m tests.examples
   
+      - name: Save compiled Lean dependencies
+        if: always() && steps.build.outcome != 'skipped' && steps.build.outcome != 'cancelled' && steps.lean-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .lake
+          key: ${{ steps.lean-cache.outputs.cache-primary-key }}
+
       - name: Cache mathlib docs
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: actions/cache@v4

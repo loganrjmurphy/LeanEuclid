@@ -34,6 +34,10 @@ ENV ELAN_HOME="/.elan"
 ENV PATH="${ELAN_HOME}/bin:${PATH}"
 RUN curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | bash -s -- -y
 
+# Make Lake's shared library visible to native SMT plugins on Linux.
+RUN ln -s "$(lean --print-prefix)/lib/lean" /opt/lean-libs
+ENV LD_LIBRARY_PATH="/opt/lean-libs"
+
 # Build the Lean project.
 RUN lake script run check
 RUN lake exe cache get
