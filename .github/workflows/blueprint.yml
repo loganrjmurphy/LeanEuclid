@@ -46,7 +46,12 @@ jobs:
           echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
 
       - name: Configure Lean shared libraries
-        run: echo "LD_LIBRARY_PATH=$(lean --print-prefix)/lib/lean${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" >> "$GITHUB_ENV"
+        timeout-minutes: 10
+        run: |
+          ~/.elan/bin/elan toolchain install "$(cat lean-toolchain)"
+          lean_prefix="$(~/.elan/bin/lean --print-prefix)"
+          test -f "$lean_prefix/lib/lean/libLake_shared.so"
+          echo "LD_LIBRARY_PATH=$lean_prefix/lib/lean${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" >> "$GITHUB_ENV"
 
       - name: Restore compiled Lean dependencies
         id: lean-cache
