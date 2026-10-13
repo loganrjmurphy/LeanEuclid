@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build_project:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     name: Build and test
     steps:
       - name: Checkout project
@@ -24,23 +24,18 @@ jobs:
           curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
 
-      - name: Build and Install CVC5
+      - name: Install pinned SMT solvers
         run: |
-          git clone https://github.com/cvc5/cvc5
-          cd cvc5
-          ./configure.sh --auto-download
-          cd build
-          make -j$(nproc)
-          sudo make install
-
-      - name: Build and Install Z3
-        run: |
-          git clone https://github.com/Z3Prover/z3
-          cd z3
-          python3 scripts/mk_make.py
-          cd build
-          make -j$(nproc)
-          sudo make install
+          mkdir -p "$RUNNER_TEMP/solvers"
+          cd "$RUNNER_TEMP/solvers"
+          curl -fL --retry 3 -o cvc5.zip https://github.com/cvc5/cvc5/releases/download/cvc5-1.2.1/cvc5-Linux-x86_64-static.zip
+          curl -fL --retry 3 -o z3.zip https://github.com/Z3Prover/z3/releases/download/z3-4.13.2/z3-4.13.2-x64-glibc-2.35.zip
+          echo '6d44abc233980a14d72cc5809287d27c3335b1d6ee863381d0b5ffcbd0d8de56  cvc5.zip' | sha256sum -c -
+          echo '642f569aa40ef3d1727ad3cdb8c7f5145ed1a58e0b49e89b46878326fe111b61  z3.zip' | sha256sum -c -
+          unzip -q cvc5.zip
+          unzip -q z3.zip
+          echo "$PWD/cvc5-Linux-x86_64-static/bin" >> "$GITHUB_PATH"
+          echo "$PWD/z3-4.13.2-x64-glibc-2.35/bin" >> "$GITHUB_PATH"
 
       - name: Install Python and smt-portfolio
         run: |
@@ -57,9 +52,15 @@ jobs:
         run: |
           ~/.elan/bin/lake script run check
           ~/.elan/bin/lake build SystemE Book UniGeo E3
-          python -m unittest discover -s tests -v
-          python -m tests.smoke
-          python -m tests.examples
+
+      - name: Run regression tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Run Lean and E3 smoke tests
+        run: python -m tests.smoke
+
+      - name: Check few-shot examples
+        run: python -m tests.examples
   
       - name: Cache mathlib docs
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -120,7 +121,7 @@ jobs:
   deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: build_project
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       pages: write
       id-token: write

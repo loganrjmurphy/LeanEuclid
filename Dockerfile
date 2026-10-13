@@ -7,16 +7,16 @@ COPY . .
 RUN apt-get update && apt-get install -y curl git cmake m4 build-essential python3-venv python3-pip
 
 # Build and Install CVC5.
-RUN git clone https://github.com/cvc5/cvc5
+RUN git clone --depth 1 --branch cvc5-1.2.1 https://github.com/cvc5/cvc5
 WORKDIR cvc5
-RUN ./configure.sh --auto-download
+RUN ./configure.sh production --auto-download
 WORKDIR build
 RUN make -j8
 RUN make install
 WORKDIR /LeanEuclid
 
 # Build and Install Z3.
-RUN git clone https://github.com/Z3Prover/z3
+RUN git clone --depth 1 --branch z3-4.13.2 https://github.com/Z3Prover/z3
 WORKDIR z3
 RUN python3 scripts/mk_make.py
 WORKDIR build
